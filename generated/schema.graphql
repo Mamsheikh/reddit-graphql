@@ -2,6 +2,19 @@
 ### Do not make changes to this file directly
 
 
+input CreateUserInput {
+  email: String!
+  password: String!
+}
+
+type Mutation {
+  createUser(credentials: CreateUserInput!): registerResponse
+}
+
 type Query {
   test(bool: Boolean!): Boolean
+}
+
+type registerResponse {
+  message: String!
 }
