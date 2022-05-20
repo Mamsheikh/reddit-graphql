@@ -1,5 +1,6 @@
 import { extendType, objectType, nonNull, inputObjectType } from 'nexus';
 import { createUserResolver } from '../resolvers/createUser';
+import { loginResolver } from '../resolvers/loginResolver';
 
 export const createUser = extendType({
   type: 'Mutation',
@@ -8,6 +9,17 @@ export const createUser = extendType({
       type: registerResponse,
       args: { credentials: nonNull(CreateUserInput) },
       resolve: createUserResolver,
+    });
+  },
+});
+
+export const login = extendType({
+  type: 'Mutation',
+  definition(t) {
+    t.field('login', {
+      type: 'registerResponse',
+      args: { credentials: nonNull(CreateUserInput) },
+      resolve: loginResolver,
     });
   },
 });

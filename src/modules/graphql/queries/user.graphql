@@ -1,0 +1,11 @@
+mutation Login($credentials: CreateUserInput!) {
+  login(credentials: $credentials) {
+    message
+  }
+}
+
+mutation CreateUser($credentials: CreateUserInput!) {
+  createUser(credentials: $credentials) {
+    message
+  }
+}

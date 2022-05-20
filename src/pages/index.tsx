@@ -20,8 +20,9 @@ const Home = () => {
 
 export const getServerSideProps = async ({
   req,
+  res,
 }: GetServerSidePropsContext) => {
-  const apolloClient = initializeApollo({ ctx: { req, prisma } });
+  const apolloClient = initializeApollo({ ctx: { res, req, prisma } });
 
   await apolloClient.query({ query: testQuery });
 
