@@ -1,9 +1,6 @@
-import { gql, useQuery } from '@apollo/client';
-import type {
-  NextPage,
-  GetServerSideProps,
-  GetServerSidePropsContext,
-} from 'next';
+import { gql } from '@apollo/client';
+import type { NextPage, GetServerSidePropsContext } from 'next';
+import { useTestQuery } from '../../generated/graphql';
 
 import { addApolloState, initializeApollo } from '../lib/apolloClient';
 import { prisma } from '../lib/prisma';
@@ -15,7 +12,7 @@ const testQuery = gql`
 `;
 
 const Home = () => {
-  const { data } = useQuery(testQuery, {
+  const { data } = useTestQuery({
     notifyOnNetworkStatusChange: true,
   });
   return <div>{JSON.stringify(data?.test)}</div>;
