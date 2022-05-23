@@ -10,8 +10,8 @@ import Layout from '../modules/components/Layout';
 function MyApp({ Component, pageProps }: AppProps) {
   const apolloClient = useApollo(pageProps);
   return (
-    <RecoilRoot>
-      <ApolloProvider client={apolloClient}>
+    <ApolloProvider client={apolloClient}>
+      <RecoilRoot>
         <Head>
           <title>Reddit</title>
           <meta name='description' content='A Reddit clone' />
@@ -27,8 +27,8 @@ function MyApp({ Component, pageProps }: AppProps) {
             <Component {...pageProps} />;
           </Layout>
         </ChakraProvider>
-      </ApolloProvider>
-    </RecoilRoot>
+      </RecoilRoot>
+    </ApolloProvider>
   );
 }
 

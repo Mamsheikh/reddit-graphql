@@ -4,6 +4,7 @@ import { FieldResolver } from 'nexus';
 import { PrismaClient } from '@prisma/client';
 import { compare } from 'bcrypt';
 import nookies from 'nookies';
+
 import { CookieSerializeOptions } from 'next/dist/server/web/types';
 
 export const loginResolver: FieldResolver<'Mutation', 'createUser'> = async (
@@ -16,9 +17,7 @@ export const loginResolver: FieldResolver<'Mutation', 'createUser'> = async (
   const existingUser = await getExistingUser(credentials, prisma);
 
   const encodedToken = await createToken(
-    {
-      userId: existingUser.id,
-    },
+    { userId: existingUser.id },
     {
       expiresIn: '7d',
     }

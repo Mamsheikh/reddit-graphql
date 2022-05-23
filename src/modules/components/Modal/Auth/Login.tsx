@@ -1,6 +1,8 @@
+import { ApolloError } from '@apollo/client';
 import { Button, Flex, Input, Text } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import { useSetRecoilState } from 'recoil';
+import { useLoginMutation } from '../../../../../generated/graphql';
 import { authModalState } from '../../../../atoms/authModalAtom';
 
 // import { auth } from '../../../firebase/clientApp';
@@ -10,20 +12,32 @@ type LoginProps = {};
 
 const Login: React.FC<LoginProps> = () => {
   const setAuthModalState = useSetRecoilState(authModalState);
-  // const [signInWithEmailAndPassword, user, loading, error] =
-  //   useSignInWithEmailAndPassword(auth);
-  // const { login, loginError, loginLoading } = useAuth();
+  const [login, { loading }] = useLoginMutation({
+    notifyOnNetworkStatusChange: true,
+  });
+  const [errMsg, setErrMsg] = useState('');
 
   const [loginForm, setLoginForm] = useState({
     email: '',
     password: '',
   });
 
-  const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
+    if (errMsg) setErrMsg('');
     // signInWithEmailAndPassword(loginForm.email, loginForm.password);
-    // login(loginForm.email, loginForm.password);
+    try {
+      await login({
+        variables: {
+          credentials: {
+            email: loginForm.email,
+            password: loginForm.password,
+          },
+        },
+      });
+    } catch (error) {
+      setErrMsg((error as ApolloError).message);
+    }
   };
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -80,15 +94,18 @@ const Login: React.FC<LoginProps> = () => {
         onChange={onChange}
       />
 
-      <Text mb={2} textAlign='center' color='red' fontSize='10pt'>
-        {/* {FIREBASE_ERRORS[loginError as keyof typeof FIREBASE_ERRORS]} */}
-      </Text>
+      {errMsg && (
+        <Text mb={2} textAlign='center' color='red' fontSize='10pt'>
+          {/* {FIREBASE_ERRORS[loginError as keyof typeof FIREBASE_ERRORS]} */}
+          {errMsg}
+        </Text>
+      )}
       <Button
         width='100%'
         height='36px'
         mb={2}
         type='submit'
-        // isLoading={loginLoading}
+        isLoading={loading}
       >
         Log In
       </Button>

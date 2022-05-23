@@ -1,6 +1,8 @@
+import { ApolloError } from '@apollo/client';
 import { Button, Flex, Input, Text } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import { useSetRecoilState } from 'recoil';
+import { useCreateUserMutation } from '../../../../../generated/graphql';
 import { authModalState } from '../../../../atoms/authModalAtom';
 
 type LoginProps = {};
@@ -9,24 +11,39 @@ const Signup: React.FC<LoginProps> = () => {
   const setAuthModalState = useSetRecoilState(authModalState);
   // const [createUserWithEmailAndPassword, userCred, loading, userError] =
   //   useCreateUserWithEmailAndPassword(auth);
-  const [loading, setLoading] = useState(false);
+  const [createUser, { loading }] = useCreateUserMutation({
+    // errorPolicy: 'all',
+  });
+  // const [loading, setLoading] = useState(false);
   const [signUpForm, setSignUpForm] = useState({
     email: '',
     password: '',
     confirmPassword: '',
   });
-  const [error, setError] = useState('');
+  const [errMsg, setErrMsg] = useState('');
 
-  const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    setLoading(true);
+  const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    // setLoading(true);
     event.preventDefault();
-    if (error) setError('');
+    if (errMsg) setErrMsg('');
     if (signUpForm.password !== signUpForm.confirmPassword) {
-      setError('Passwords do not match');
+      setErrMsg('Passwords do not match');
       return;
     }
     // signup(signUpForm.email, signUpForm.password);
-    setLoading(false);
+    // setLoading(false);
+    try {
+      await createUser({
+        variables: {
+          credentials: {
+            email: signUpForm.email,
+            password: signUpForm.password,
+          },
+        },
+      });
+    } catch (error) {
+      setErrMsg((error as ApolloError).message);
+    }
   };
   // console.log(userError?.message);
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -117,9 +134,9 @@ const Signup: React.FC<LoginProps> = () => {
         bg='gray.50'
         onChange={onChange}
       />
-      {error && (
+      {errMsg && (
         <Text mb={2} color='red' fontSize='10pt' textAlign={'center'}>
-          {error}
+          {errMsg}
         </Text>
       )}
       <Button

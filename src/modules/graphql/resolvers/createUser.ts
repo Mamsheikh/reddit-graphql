@@ -29,7 +29,7 @@ export const createUserResolver: FieldResolver<
   });
 
   const encodedToken = await createToken(
-    { id: newUser.id },
+    { userId: newUser.id },
     {
       expiresIn: '7d',
     }
