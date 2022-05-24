@@ -23,6 +23,7 @@ export type CreateUserInput = {
 export type Mutation = {
   __typename?: 'Mutation';
   createUser?: Maybe<RegisterResponse>;
+  googleLogin?: Maybe<RegisterResponse>;
   login?: Maybe<RegisterResponse>;
 };
 
@@ -32,12 +33,18 @@ export type MutationCreateUserArgs = {
 };
 
 
+export type MutationGoogleLoginArgs = {
+  code: Scalars['String'];
+};
+
+
 export type MutationLoginArgs = {
   credentials: CreateUserInput;
 };
 
 export type Query = {
   __typename?: 'Query';
+  googleAuthUrl?: Maybe<Scalars['String']>;
   test?: Maybe<Scalars['Boolean']>;
 };
 
@@ -69,6 +76,18 @@ export type CreateUserMutationVariables = Exact<{
 
 
 export type CreateUserMutation = { __typename?: 'Mutation', createUser?: { __typename?: 'registerResponse', message: string } | null };
+
+export type AuthUrlQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type AuthUrlQuery = { __typename?: 'Query', googleAuthUrl?: string | null };
+
+export type GoogleLoginMutationVariables = Exact<{
+  code: Scalars['String'];
+}>;
+
+
+export type GoogleLoginMutation = { __typename?: 'Mutation', googleLogin?: { __typename?: 'registerResponse', message: string } | null };
 
 
 export const TestDocument = gql`
@@ -169,3 +188,68 @@ export function useCreateUserMutation(baseOptions?: Apollo.MutationHookOptions<C
 export type CreateUserMutationHookResult = ReturnType<typeof useCreateUserMutation>;
 export type CreateUserMutationResult = Apollo.MutationResult<CreateUserMutation>;
 export type CreateUserMutationOptions = Apollo.BaseMutationOptions<CreateUserMutation, CreateUserMutationVariables>;
+export const AuthUrlDocument = gql`
+    query AuthUrl {
+  googleAuthUrl
+}
+    `;
+
+/**
+ * __useAuthUrlQuery__
+ *
+ * To run a query within a React component, call `useAuthUrlQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAuthUrlQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAuthUrlQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useAuthUrlQuery(baseOptions?: Apollo.QueryHookOptions<AuthUrlQuery, AuthUrlQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<AuthUrlQuery, AuthUrlQueryVariables>(AuthUrlDocument, options);
+      }
+export function useAuthUrlLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AuthUrlQuery, AuthUrlQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<AuthUrlQuery, AuthUrlQueryVariables>(AuthUrlDocument, options);
+        }
+export type AuthUrlQueryHookResult = ReturnType<typeof useAuthUrlQuery>;
+export type AuthUrlLazyQueryHookResult = ReturnType<typeof useAuthUrlLazyQuery>;
+export type AuthUrlQueryResult = Apollo.QueryResult<AuthUrlQuery, AuthUrlQueryVariables>;
+export const GoogleLoginDocument = gql`
+    mutation GoogleLogin($code: String!) {
+  googleLogin(code: $code) {
+    message
+  }
+}
+    `;
+export type GoogleLoginMutationFn = Apollo.MutationFunction<GoogleLoginMutation, GoogleLoginMutationVariables>;
+
+/**
+ * __useGoogleLoginMutation__
+ *
+ * To run a mutation, you first call `useGoogleLoginMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useGoogleLoginMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [googleLoginMutation, { data, loading, error }] = useGoogleLoginMutation({
+ *   variables: {
+ *      code: // value for 'code'
+ *   },
+ * });
+ */
+export function useGoogleLoginMutation(baseOptions?: Apollo.MutationHookOptions<GoogleLoginMutation, GoogleLoginMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<GoogleLoginMutation, GoogleLoginMutationVariables>(GoogleLoginDocument, options);
+      }
+export type GoogleLoginMutationHookResult = ReturnType<typeof useGoogleLoginMutation>;
+export type GoogleLoginMutationResult = Apollo.MutationResult<GoogleLoginMutation>;
+export type GoogleLoginMutationOptions = Apollo.BaseMutationOptions<GoogleLoginMutation, GoogleLoginMutationVariables>;

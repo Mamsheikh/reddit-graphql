@@ -13,7 +13,7 @@ type LoginProps = {};
 const Login: React.FC<LoginProps> = () => {
   const setAuthModalState = useSetRecoilState(authModalState);
   const [login, { loading }] = useLoginMutation({
-    notifyOnNetworkStatusChange: true,
+    // notifyOnNetworkStatusChange: true,
   });
   const [errMsg, setErrMsg] = useState('');
 

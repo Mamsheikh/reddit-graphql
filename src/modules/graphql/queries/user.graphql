@@ -9,3 +9,13 @@ mutation CreateUser($credentials: CreateUserInput!) {
     message
   }
 }
+
+query AuthUrl {
+  googleAuthUrl
+}
+
+mutation GoogleLogin($code: String!) {
+  googleLogin(code: $code) {
+    message
+  }
+}

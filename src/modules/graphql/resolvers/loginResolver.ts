@@ -7,7 +7,7 @@ import nookies from 'nookies';
 
 import { CookieSerializeOptions } from 'next/dist/server/web/types';
 
-export const loginResolver: FieldResolver<'Mutation', 'createUser'> = async (
+export const loginResolver: FieldResolver<'Mutation', 'login'> = async (
   _,
   { credentials },
   { prisma, res }

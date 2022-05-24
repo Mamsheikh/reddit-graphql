@@ -9,10 +9,12 @@ input CreateUserInput {
 
 type Mutation {
   createUser(credentials: CreateUserInput!): registerResponse
+  googleLogin(code: String!): registerResponse
   login(credentials: CreateUserInput!): registerResponse
 }
 
 type Query {
+  googleAuthUrl: String
   test(bool: Boolean!): Boolean
 }
 

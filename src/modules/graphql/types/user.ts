@@ -1,6 +1,14 @@
-import { extendType, objectType, nonNull, inputObjectType } from 'nexus';
+import { Google } from './../../../lib/Google';
+import {
+  extendType,
+  objectType,
+  nonNull,
+  inputObjectType,
+  stringArg,
+} from 'nexus';
 import { createUserResolver } from '../resolvers/createUser';
 import { loginResolver } from '../resolvers/loginResolver';
+import { googleLoginResolver } from '../resolvers/googleLogin';
 
 export const createUser = extendType({
   type: 'Mutation',
@@ -20,6 +28,31 @@ export const login = extendType({
       type: 'registerResponse',
       args: { credentials: nonNull(CreateUserInput) },
       resolve: loginResolver,
+    });
+  },
+});
+
+export const googleLogin = extendType({
+  type: 'Mutation',
+  definition(t) {
+    t.field('googleLogin', {
+      type: registerResponse,
+      args: {
+        code: nonNull(stringArg()),
+      },
+      resolve: googleLoginResolver,
+    });
+  },
+});
+
+export const googleAuthUrl = extendType({
+  type: 'Query',
+  definition(t) {
+    t.field('googleAuthUrl', {
+      type: 'String',
+      resolve() {
+        return Google.authUrl;
+      },
     });
   },
 });
