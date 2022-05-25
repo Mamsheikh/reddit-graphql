@@ -12,7 +12,12 @@ const Signup: React.FC<LoginProps> = () => {
   // const [createUserWithEmailAndPassword, userCred, loading, userError] =
   //   useCreateUserWithEmailAndPassword(auth);
   const [createUser, { loading }] = useCreateUserMutation({
-    // errorPolicy: 'all',
+    onCompleted() {
+      setAuthModalState((prev) => ({
+        ...prev,
+        open: false,
+      }));
+    },
   });
   // const [loading, setLoading] = useState(false);
   const [signUpForm, setSignUpForm] = useState({

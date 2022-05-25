@@ -14,6 +14,12 @@ const Login: React.FC<LoginProps> = () => {
   const setAuthModalState = useSetRecoilState(authModalState);
   const [login, { loading }] = useLoginMutation({
     // notifyOnNetworkStatusChange: true,
+    onCompleted() {
+      setAuthModalState((prev) => ({
+        ...prev,
+        open: false,
+      }));
+    },
   });
   const [errMsg, setErrMsg] = useState('');
 
