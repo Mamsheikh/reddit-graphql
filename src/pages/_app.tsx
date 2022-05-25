@@ -1,7 +1,7 @@
 import { ApolloProvider } from '@apollo/client';
 import { ChakraProvider } from '@chakra-ui/react';
 import type { AppProps } from 'next/app';
-import { GoogleOAuthProvider } from '@react-oauth/google';
+
 import Head from 'next/head';
 import { theme } from '../chakra/theme';
 import { RecoilRoot } from 'recoil';
@@ -23,15 +23,12 @@ function MyApp({ Component, pageProps }: AppProps) {
             content='initial-scale=1.0, width=device-width'
           />
         </Head>
-        <GoogleOAuthProvider
-          clientId={process.env.NEXT_PUBLIC_GOOGLE_ID as string}
-        >
-          <ChakraProvider theme={theme}>
-            <Layout>
-              <Component {...pageProps} />;
-            </Layout>
-          </ChakraProvider>
-        </GoogleOAuthProvider>
+
+        <ChakraProvider theme={theme}>
+          <Layout>
+            <Component {...pageProps} />;
+          </Layout>
+        </ChakraProvider>
       </RecoilRoot>
     </ApolloProvider>
   );

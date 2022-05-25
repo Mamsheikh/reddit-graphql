@@ -1,26 +1,29 @@
-import { useApolloClient } from '@apollo/client';
-import { Button, Flex, Image, Text } from '@chakra-ui/react';
-import { GoogleLogin, useGoogleLogin } from '@react-oauth/google';
+import { Button, Flex, Image } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React, { useEffect, useRef } from 'react';
 import { useSetRecoilState } from 'recoil';
 import {
-  AuthUrlDocument,
-  AuthUrlQuery,
   useAuthUrlLazyQuery,
-  useAuthUrlQuery,
   useGoogleLoginMutation,
 } from '../../../../../generated/graphql';
 import { authModalState } from '../../../../atoms/authModalAtom';
 
 const OAuthButtons: React.FC = () => {
-  const client = useApolloClient();
+  // const client = useApolloClient();
   const router = useRouter();
-  const { code } = router.query;
+  // const { code } = router.query;
   // console.log(code);
   // const { signInWithGoogle } = useAuth();
   const [authUrl] = useAuthUrlLazyQuery();
-  const [googleLogin] = useGoogleLoginMutation();
+  const [googleLogin] = useGoogleLoginMutation({
+    onCompleted() {
+      setAuthModalState((prev) => ({
+        ...prev,
+        open: false,
+      }));
+      router.push('/');
+    },
+  });
   const setAuthModalState = useSetRecoilState(authModalState);
 
   const handleAuthorize = async () => {
@@ -36,14 +39,14 @@ const OAuthButtons: React.FC = () => {
   const logInRef = useRef(googleLogin);
   useEffect(() => {
     const code = new URL(window.location.href).searchParams.get('code');
-    console.log('codes', code);
+    // console.log('codes', code);
     if (code) {
       logInRef.current({
         variables: {
           code: code,
         },
       });
-      setAuthModalState({ open: true, view: 'login' });
+      // setAuthModalState({ open: true, view: 'login' });
     }
   }, []);
 
