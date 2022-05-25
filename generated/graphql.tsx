@@ -20,6 +20,15 @@ export type CreateUserInput = {
   password: Scalars['String'];
 };
 
+export type ImplicitLoginResponse = {
+  __typename?: 'ImplicitLoginResponse';
+  displayName?: Maybe<Scalars['String']>;
+  email?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['String']>;
+  image?: Maybe<Scalars['String']>;
+  loggedIn: Scalars['Boolean'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   createUser?: Maybe<RegisterResponse>;
@@ -45,6 +54,7 @@ export type MutationLoginArgs = {
 export type Query = {
   __typename?: 'Query';
   googleAuthUrl?: Maybe<Scalars['String']>;
+  implicitLogin?: Maybe<ImplicitLoginResponse>;
   test?: Maybe<Scalars['Boolean']>;
 };
 
@@ -55,6 +65,9 @@ export type QueryTestArgs = {
 
 export type RegisterResponse = {
   __typename?: 'registerResponse';
+  displayName?: Maybe<Scalars['String']>;
+  email?: Maybe<Scalars['String']>;
+  image?: Maybe<Scalars['String']>;
   message: Scalars['String'];
 };
 
@@ -88,6 +101,11 @@ export type GoogleLoginMutationVariables = Exact<{
 
 
 export type GoogleLoginMutation = { __typename?: 'Mutation', googleLogin?: { __typename?: 'registerResponse', message: string } | null };
+
+export type ImplicitLoginQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type ImplicitLoginQuery = { __typename?: 'Query', implicitLogin?: { __typename?: 'ImplicitLoginResponse', loggedIn: boolean, email?: string | null, displayName?: string | null, id?: string | null, image?: string | null } | null };
 
 
 export const TestDocument = gql`
@@ -253,3 +271,41 @@ export function useGoogleLoginMutation(baseOptions?: Apollo.MutationHookOptions<
 export type GoogleLoginMutationHookResult = ReturnType<typeof useGoogleLoginMutation>;
 export type GoogleLoginMutationResult = Apollo.MutationResult<GoogleLoginMutation>;
 export type GoogleLoginMutationOptions = Apollo.BaseMutationOptions<GoogleLoginMutation, GoogleLoginMutationVariables>;
+export const ImplicitLoginDocument = gql`
+    query ImplicitLogin {
+  implicitLogin {
+    loggedIn
+    email
+    displayName
+    id
+    image
+  }
+}
+    `;
+
+/**
+ * __useImplicitLoginQuery__
+ *
+ * To run a query within a React component, call `useImplicitLoginQuery` and pass it any options that fit your needs.
+ * When your component renders, `useImplicitLoginQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useImplicitLoginQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useImplicitLoginQuery(baseOptions?: Apollo.QueryHookOptions<ImplicitLoginQuery, ImplicitLoginQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ImplicitLoginQuery, ImplicitLoginQueryVariables>(ImplicitLoginDocument, options);
+      }
+export function useImplicitLoginLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ImplicitLoginQuery, ImplicitLoginQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ImplicitLoginQuery, ImplicitLoginQueryVariables>(ImplicitLoginDocument, options);
+        }
+export type ImplicitLoginQueryHookResult = ReturnType<typeof useImplicitLoginQuery>;
+export type ImplicitLoginLazyQueryHookResult = ReturnType<typeof useImplicitLoginLazyQuery>;
+export type ImplicitLoginQueryResult = Apollo.QueryResult<ImplicitLoginQuery, ImplicitLoginQueryVariables>;

@@ -1,9 +1,13 @@
 import { Flex, Image } from '@chakra-ui/react';
 import React from 'react';
+import { useRecoilValue } from 'recoil';
+import { userState } from '../../../atoms/userAtom';
 import RightContent from './RightContent';
 import SearchInput from './SearchInput';
 
 const Navbar: React.FC = () => {
+  const userAtomState = useRecoilValue(userState);
+  console.log('user', userAtomState);
   return (
     <Flex
       bg='white'

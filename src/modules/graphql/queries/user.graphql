@@ -19,3 +19,13 @@ mutation GoogleLogin($code: String!) {
     message
   }
 }
+
+query ImplicitLogin {
+  implicitLogin {
+    loggedIn
+    email
+    displayName
+    id
+    image
+  }
+}

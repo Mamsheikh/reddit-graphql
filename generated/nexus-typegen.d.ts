@@ -32,9 +32,19 @@ export interface NexusGenScalars {
 }
 
 export interface NexusGenObjects {
+  ImplicitLoginResponse: { // root type
+    displayName?: string | null; // String
+    email?: string | null; // String
+    id?: string | null; // String
+    image?: string | null; // String
+    loggedIn: boolean; // Boolean!
+  }
   Mutation: {};
   Query: {};
   registerResponse: { // root type
+    displayName?: string | null; // String
+    email?: string | null; // String
+    image?: string | null; // String
     message: string; // String!
   }
 }
@@ -50,6 +60,13 @@ export type NexusGenRootTypes = NexusGenObjects
 export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
 
 export interface NexusGenFieldTypes {
+  ImplicitLoginResponse: { // field return type
+    displayName: string | null; // String
+    email: string | null; // String
+    id: string | null; // String
+    image: string | null; // String
+    loggedIn: boolean; // Boolean!
+  }
   Mutation: { // field return type
     createUser: NexusGenRootTypes['registerResponse'] | null; // registerResponse
     googleLogin: NexusGenRootTypes['registerResponse'] | null; // registerResponse
@@ -57,14 +74,25 @@ export interface NexusGenFieldTypes {
   }
   Query: { // field return type
     googleAuthUrl: string | null; // String
+    implicitLogin: NexusGenRootTypes['ImplicitLoginResponse'] | null; // ImplicitLoginResponse
     test: boolean | null; // Boolean
   }
   registerResponse: { // field return type
+    displayName: string | null; // String
+    email: string | null; // String
+    image: string | null; // String
     message: string; // String!
   }
 }
 
 export interface NexusGenFieldTypeNames {
+  ImplicitLoginResponse: { // field return type name
+    displayName: 'String'
+    email: 'String'
+    id: 'String'
+    image: 'String'
+    loggedIn: 'Boolean'
+  }
   Mutation: { // field return type name
     createUser: 'registerResponse'
     googleLogin: 'registerResponse'
@@ -72,9 +100,13 @@ export interface NexusGenFieldTypeNames {
   }
   Query: { // field return type name
     googleAuthUrl: 'String'
+    implicitLogin: 'ImplicitLoginResponse'
     test: 'Boolean'
   }
   registerResponse: { // field return type name
+    displayName: 'String'
+    email: 'String'
+    image: 'String'
     message: 'String'
   }
 }

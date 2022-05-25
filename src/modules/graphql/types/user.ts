@@ -9,6 +9,7 @@ import {
 import { createUserResolver } from '../resolvers/createUser';
 import { loginResolver } from '../resolvers/loginResolver';
 import { googleLoginResolver } from '../resolvers/googleLogin';
+import { implicitLoginResolver } from '../resolvers/implicitLoginResolver';
 
 export const createUser = extendType({
   type: 'Mutation',
@@ -45,6 +46,16 @@ export const googleLogin = extendType({
   },
 });
 
+export const ImplicitLogin = extendType({
+  type: 'Query',
+  definition(t) {
+    t.field('implicitLogin', {
+      type: ImplicitLoginResponse,
+      resolve: implicitLoginResolver,
+    });
+  },
+});
+
 export const googleAuthUrl = extendType({
   type: 'Query',
   definition(t) {
@@ -61,6 +72,9 @@ const registerResponse = objectType({
   name: 'registerResponse',
   definition(t) {
     t.nonNull.string('message');
+    t.string('displayName');
+    t.string('email');
+    t.string('image');
   },
 });
 
@@ -69,5 +83,16 @@ const CreateUserInput = inputObjectType({
   definition(t) {
     t.nonNull.string('email');
     t.nonNull.string('password');
+  },
+});
+
+const ImplicitLoginResponse = objectType({
+  name: 'ImplicitLoginResponse',
+  definition(t) {
+    t.nonNull.boolean('loggedIn');
+    t.string('email');
+    t.string('displayName');
+    t.string('id');
+    t.string('image');
   },
 });
