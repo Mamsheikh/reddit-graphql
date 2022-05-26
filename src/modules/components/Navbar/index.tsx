@@ -2,6 +2,7 @@ import { Flex, Image } from '@chakra-ui/react';
 import React from 'react';
 import { useRecoilValue } from 'recoil';
 import { userState } from '../../../atoms/userAtom';
+import Directory from './Directory';
 import RightContent from './RightContent';
 import SearchInput from './SearchInput';
 
@@ -30,8 +31,9 @@ const Navbar: React.FC = () => {
           display={{ base: 'none', md: 'unset' }}
         />
       </Flex>
+      <Directory />
       <SearchInput />
-      <RightContent />
+      <RightContent user={userAtomState} />
       {/* {user && <Directory />}
   <SearchInput user={user} />
   <RightContent user={user} /> */}

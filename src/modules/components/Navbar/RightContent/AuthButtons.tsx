@@ -2,7 +2,7 @@ import { Button } from '@chakra-ui/react';
 import React from 'react';
 import { useSetRecoilState } from 'recoil';
 import { authModalState } from '../../../../atoms/authModalAtom';
-import AuthModal from '../../Modal/Auth/AuthModal';
+
 // import AuthModal from '../../Modal/Auth/AuthModal';
 
 const AuthButtons: React.FC = () => {
@@ -10,7 +10,6 @@ const AuthButtons: React.FC = () => {
 
   return (
     <>
-      <AuthModal />
       <Button
         variant={'outline'}
         height='28px'
