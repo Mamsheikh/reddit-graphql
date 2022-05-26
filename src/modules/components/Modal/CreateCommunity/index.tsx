@@ -19,6 +19,7 @@ import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { BsFillEyeFill, BsFillPersonFill } from 'react-icons/bs';
 import { HiLockClosed } from 'react-icons/hi';
+import { useCreateCommunityMutation } from '../../../../../generated/graphql';
 // import useDirectory from '../../../hooks/useDirectory';
 
 type CommunitModalProps = {
@@ -31,13 +32,14 @@ const CreateCommunityModal: React.FC<CommunitModalProps> = ({
   handleClose,
 }) => {
   const router = useRouter();
+  const [createCommunity, { loading, error }] = useCreateCommunityMutation();
   // const [user] = useAuthState(auth);
   // const { toggleMenuOpen } = useDirectory();
   const [communityName, setCommunityName] = useState('');
   const [charsRemaining, setCharsRemaining] = useState(21);
   const [communityType, setCommunityType] = useState('public');
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
+  // const [error, setError] = useState('');
+  // const [loading, setLoading] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.value.length > 21) return;
@@ -52,14 +54,23 @@ const CreateCommunityModal: React.FC<CommunitModalProps> = ({
   };
 
   const handleCreateCommunity = async () => {
-    if (error) setError('');
     const format = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
     if (format.test(communityName) || communityName.length < 3) {
       throw new Error(
         'Community name must be between 3-21 characters, and can only contain letters, numbers or underscores'
       );
     }
-    setLoading(true);
+    try {
+      await createCommunity({
+        variables: {
+          communityName,
+          communityType,
+        },
+      });
+    } catch (error: any) {
+      console.log(error);
+      // setError(error.message);
+    }
   };
   return (
     <>
@@ -106,7 +117,7 @@ const CreateCommunityModal: React.FC<CommunitModalProps> = ({
                 {charsRemaining} Characters remaining
               </Text>
               <Text fontSize='9pt' color='red' pt={1}>
-                {error}
+                {error?.message}
               </Text>
               <Box mt={4} mb={4}>
                 <Text fontSize={15} fontWeight={600}>
@@ -115,8 +126,8 @@ const CreateCommunityModal: React.FC<CommunitModalProps> = ({
 
                 <Stack spacing={2}>
                   <Checkbox
-                    name='public'
-                    isChecked={communityType === 'public'}
+                    name='PUBLIC'
+                    isChecked={communityType === 'PUBLIC'}
                     onChange={onCommunityTypeChange}
                   >
                     <Flex align='center'>
@@ -130,8 +141,8 @@ const CreateCommunityModal: React.FC<CommunitModalProps> = ({
                     </Flex>
                   </Checkbox>
                   <Checkbox
-                    name='restricted'
-                    isChecked={communityType === 'restricted'}
+                    name='RESTRICTED'
+                    isChecked={communityType === 'RESTRICTED'}
                     onChange={onCommunityTypeChange}
                   >
                     <Flex align='center'>
@@ -146,8 +157,8 @@ const CreateCommunityModal: React.FC<CommunitModalProps> = ({
                     </Flex>
                   </Checkbox>
                   <Checkbox
-                    name='private'
-                    isChecked={communityType === 'private'}
+                    name='PRIVATE'
+                    isChecked={communityType === 'PRIVATE'}
                     onChange={onCommunityTypeChange}
                   >
                     <Flex align='center'>

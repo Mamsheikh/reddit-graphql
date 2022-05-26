@@ -32,6 +32,12 @@ export interface NexusGenScalars {
 }
 
 export interface NexusGenObjects {
+  Community: { // root type
+    creatorId?: string | null; // String
+    image?: string | null; // String
+    name?: string | null; // String
+    numberOfMembers?: number | null; // Int
+  }
   ImplicitLoginResponse: { // root type
     displayName?: string | null; // String
     email?: string | null; // String
@@ -60,6 +66,12 @@ export type NexusGenRootTypes = NexusGenObjects
 export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
 
 export interface NexusGenFieldTypes {
+  Community: { // field return type
+    creatorId: string | null; // String
+    image: string | null; // String
+    name: string | null; // String
+    numberOfMembers: number | null; // Int
+  }
   ImplicitLoginResponse: { // field return type
     displayName: string | null; // String
     email: string | null; // String
@@ -68,6 +80,7 @@ export interface NexusGenFieldTypes {
     loggedIn: boolean; // Boolean!
   }
   Mutation: { // field return type
+    createCommunity: NexusGenRootTypes['Community'] | null; // Community
     createUser: NexusGenRootTypes['registerResponse'] | null; // registerResponse
     googleLogin: NexusGenRootTypes['registerResponse'] | null; // registerResponse
     login: NexusGenRootTypes['registerResponse'] | null; // registerResponse
@@ -75,7 +88,6 @@ export interface NexusGenFieldTypes {
   Query: { // field return type
     googleAuthUrl: string | null; // String
     implicitLogin: NexusGenRootTypes['ImplicitLoginResponse'] | null; // ImplicitLoginResponse
-    test: boolean | null; // Boolean
   }
   registerResponse: { // field return type
     displayName: string | null; // String
@@ -86,6 +98,12 @@ export interface NexusGenFieldTypes {
 }
 
 export interface NexusGenFieldTypeNames {
+  Community: { // field return type name
+    creatorId: 'String'
+    image: 'String'
+    name: 'String'
+    numberOfMembers: 'Int'
+  }
   ImplicitLoginResponse: { // field return type name
     displayName: 'String'
     email: 'String'
@@ -94,6 +112,7 @@ export interface NexusGenFieldTypeNames {
     loggedIn: 'Boolean'
   }
   Mutation: { // field return type name
+    createCommunity: 'Community'
     createUser: 'registerResponse'
     googleLogin: 'registerResponse'
     login: 'registerResponse'
@@ -101,7 +120,6 @@ export interface NexusGenFieldTypeNames {
   Query: { // field return type name
     googleAuthUrl: 'String'
     implicitLogin: 'ImplicitLoginResponse'
-    test: 'Boolean'
   }
   registerResponse: { // field return type name
     displayName: 'String'
@@ -113,6 +131,10 @@ export interface NexusGenFieldTypeNames {
 
 export interface NexusGenArgTypes {
   Mutation: {
+    createCommunity: { // args
+      communityName: string; // String!
+      communityType?: string | null; // String
+    }
     createUser: { // args
       credentials: NexusGenInputs['CreateUserInput']; // CreateUserInput!
     }
@@ -121,11 +143,6 @@ export interface NexusGenArgTypes {
     }
     login: { // args
       credentials: NexusGenInputs['CreateUserInput']; // CreateUserInput!
-    }
-  }
-  Query: {
-    test: { // args
-      bool: boolean; // Boolean!
     }
   }
 }

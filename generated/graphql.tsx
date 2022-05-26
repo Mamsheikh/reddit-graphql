@@ -15,6 +15,14 @@ export type Scalars = {
   Float: number;
 };
 
+export type Community = {
+  __typename?: 'Community';
+  creatorId?: Maybe<Scalars['String']>;
+  image?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
+  numberOfMembers?: Maybe<Scalars['Int']>;
+};
+
 export type CreateUserInput = {
   email: Scalars['String'];
   password: Scalars['String'];
@@ -31,9 +39,16 @@ export type ImplicitLoginResponse = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  createCommunity?: Maybe<Community>;
   createUser?: Maybe<RegisterResponse>;
   googleLogin?: Maybe<RegisterResponse>;
   login?: Maybe<RegisterResponse>;
+};
+
+
+export type MutationCreateCommunityArgs = {
+  communityName: Scalars['String'];
+  communityType?: InputMaybe<Scalars['String']>;
 };
 
 
@@ -55,12 +70,6 @@ export type Query = {
   __typename?: 'Query';
   googleAuthUrl?: Maybe<Scalars['String']>;
   implicitLogin?: Maybe<ImplicitLoginResponse>;
-  test?: Maybe<Scalars['Boolean']>;
-};
-
-
-export type QueryTestArgs = {
-  bool: Scalars['Boolean'];
 };
 
 export type RegisterResponse = {
@@ -71,10 +80,13 @@ export type RegisterResponse = {
   message: Scalars['String'];
 };
 
-export type TestQueryVariables = Exact<{ [key: string]: never; }>;
+export type CreateCommunityMutationVariables = Exact<{
+  communityName: Scalars['String'];
+  communityType?: InputMaybe<Scalars['String']>;
+}>;
 
 
-export type TestQuery = { __typename?: 'Query', test?: boolean | null };
+export type CreateCommunityMutation = { __typename?: 'Mutation', createCommunity?: { __typename?: 'Community', name?: string | null, creatorId?: string | null, image?: string | null, numberOfMembers?: number | null } | null };
 
 export type LoginMutationVariables = Exact<{
   credentials: CreateUserInput;
@@ -108,38 +120,43 @@ export type ImplicitLoginQueryVariables = Exact<{ [key: string]: never; }>;
 export type ImplicitLoginQuery = { __typename?: 'Query', implicitLogin?: { __typename?: 'ImplicitLoginResponse', loggedIn: boolean, email?: string | null, displayName?: string | null, id?: string | null, image?: string | null } | null };
 
 
-export const TestDocument = gql`
-    query Test {
-  test(bool: false)
+export const CreateCommunityDocument = gql`
+    mutation CreateCommunity($communityName: String!, $communityType: String) {
+  createCommunity(communityName: $communityName, communityType: $communityType) {
+    name
+    creatorId
+    image
+    numberOfMembers
+  }
 }
     `;
+export type CreateCommunityMutationFn = Apollo.MutationFunction<CreateCommunityMutation, CreateCommunityMutationVariables>;
 
 /**
- * __useTestQuery__
+ * __useCreateCommunityMutation__
  *
- * To run a query within a React component, call `useTestQuery` and pass it any options that fit your needs.
- * When your component renders, `useTestQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
+ * To run a mutation, you first call `useCreateCommunityMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateCommunityMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
  *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const { data, loading, error } = useTestQuery({
+ * const [createCommunityMutation, { data, loading, error }] = useCreateCommunityMutation({
  *   variables: {
+ *      communityName: // value for 'communityName'
+ *      communityType: // value for 'communityType'
  *   },
  * });
  */
-export function useTestQuery(baseOptions?: Apollo.QueryHookOptions<TestQuery, TestQueryVariables>) {
+export function useCreateCommunityMutation(baseOptions?: Apollo.MutationHookOptions<CreateCommunityMutation, CreateCommunityMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<TestQuery, TestQueryVariables>(TestDocument, options);
+        return Apollo.useMutation<CreateCommunityMutation, CreateCommunityMutationVariables>(CreateCommunityDocument, options);
       }
-export function useTestLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<TestQuery, TestQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<TestQuery, TestQueryVariables>(TestDocument, options);
-        }
-export type TestQueryHookResult = ReturnType<typeof useTestQuery>;
-export type TestLazyQueryHookResult = ReturnType<typeof useTestLazyQuery>;
-export type TestQueryResult = Apollo.QueryResult<TestQuery, TestQueryVariables>;
+export type CreateCommunityMutationHookResult = ReturnType<typeof useCreateCommunityMutation>;
+export type CreateCommunityMutationResult = Apollo.MutationResult<CreateCommunityMutation>;
+export type CreateCommunityMutationOptions = Apollo.BaseMutationOptions<CreateCommunityMutation, CreateCommunityMutationVariables>;
 export const LoginDocument = gql`
     mutation Login($credentials: CreateUserInput!) {
   login(credentials: $credentials) {

@@ -2,6 +2,13 @@
 ### Do not make changes to this file directly
 
 
+type Community {
+  creatorId: String
+  image: String
+  name: String
+  numberOfMembers: Int
+}
+
 input CreateUserInput {
   email: String!
   password: String!
@@ -16,6 +23,7 @@ type ImplicitLoginResponse {
 }
 
 type Mutation {
+  createCommunity(communityName: String!, communityType: String): Community
   createUser(credentials: CreateUserInput!): registerResponse
   googleLogin(code: String!): registerResponse
   login(credentials: CreateUserInput!): registerResponse
@@ -24,7 +32,6 @@ type Mutation {
 type Query {
   googleAuthUrl: String
   implicitLogin: ImplicitLoginResponse
-  test(bool: Boolean!): Boolean
 }
 
 type registerResponse {
