@@ -6,7 +6,6 @@ import { useSetRecoilState } from 'recoil';
 import {
   ImplicitLoginDocument,
   ImplicitLoginQuery,
-  useTestQuery,
 } from '../../generated/graphql';
 import { authModalState } from '../atoms/authModalAtom';
 

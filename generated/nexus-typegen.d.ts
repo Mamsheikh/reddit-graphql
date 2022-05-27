@@ -33,10 +33,13 @@ export interface NexusGenScalars {
 
 export interface NexusGenObjects {
   Community: { // root type
+    createdAt?: string | null; // String
     creatorId?: string | null; // String
+    id?: string | null; // String
     image?: string | null; // String
     name?: string | null; // String
     numberOfMembers?: number | null; // Int
+    privacyType?: string | null; // String
   }
   ImplicitLoginResponse: { // root type
     displayName?: string | null; // String
@@ -67,10 +70,13 @@ export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
 
 export interface NexusGenFieldTypes {
   Community: { // field return type
+    createdAt: string | null; // String
     creatorId: string | null; // String
+    id: string | null; // String
     image: string | null; // String
     name: string | null; // String
     numberOfMembers: number | null; // Int
+    privacyType: string | null; // String
   }
   ImplicitLoginResponse: { // field return type
     displayName: string | null; // String
@@ -86,6 +92,7 @@ export interface NexusGenFieldTypes {
     login: NexusGenRootTypes['registerResponse'] | null; // registerResponse
   }
   Query: { // field return type
+    getCommunity: NexusGenRootTypes['Community'] | null; // Community
     googleAuthUrl: string | null; // String
     implicitLogin: NexusGenRootTypes['ImplicitLoginResponse'] | null; // ImplicitLoginResponse
   }
@@ -99,10 +106,13 @@ export interface NexusGenFieldTypes {
 
 export interface NexusGenFieldTypeNames {
   Community: { // field return type name
+    createdAt: 'String'
     creatorId: 'String'
+    id: 'String'
     image: 'String'
     name: 'String'
     numberOfMembers: 'Int'
+    privacyType: 'String'
   }
   ImplicitLoginResponse: { // field return type name
     displayName: 'String'
@@ -118,6 +128,7 @@ export interface NexusGenFieldTypeNames {
     login: 'registerResponse'
   }
   Query: { // field return type name
+    getCommunity: 'Community'
     googleAuthUrl: 'String'
     implicitLogin: 'ImplicitLoginResponse'
   }
@@ -143,6 +154,11 @@ export interface NexusGenArgTypes {
     }
     login: { // args
       credentials: NexusGenInputs['CreateUserInput']; // CreateUserInput!
+    }
+  }
+  Query: {
+    getCommunity: { // args
+      communityName: string; // String!
     }
   }
 }

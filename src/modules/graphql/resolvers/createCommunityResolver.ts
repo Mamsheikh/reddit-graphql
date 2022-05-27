@@ -24,7 +24,7 @@ export const createCommunityResolver: FieldResolver<
       creatorId: user.id,
       name: communityName,
       privacyType: communityType,
-      numberOfMembers: 0,
+      numberOfMembers: 1,
     },
   });
   return {

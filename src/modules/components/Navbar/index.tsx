@@ -8,7 +8,7 @@ import SearchInput from './SearchInput';
 
 const Navbar: React.FC = () => {
   const userAtomState = useRecoilValue(userState);
-  console.log('user', userAtomState);
+  // console.log('user', userAtomState);
   return (
     <Flex
       bg='white'

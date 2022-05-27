@@ -9,3 +9,15 @@ mutation CreateCommunity($communityName: String!, $communityType: String) {
     numberOfMembers
   }
 }
+
+query GetCommunity($communityName: String!) {
+  getCommunity(communityName: $communityName) {
+    id
+    name
+    creatorId
+    image
+    numberOfMembers
+    createdAt
+    privacyType
+  }
+}

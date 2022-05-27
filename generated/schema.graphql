@@ -3,10 +3,13 @@
 
 
 type Community {
+  createdAt: String
   creatorId: String
+  id: String
   image: String
   name: String
   numberOfMembers: Int
+  privacyType: String
 }
 
 input CreateUserInput {
@@ -30,6 +33,7 @@ type Mutation {
 }
 
 type Query {
+  getCommunity(communityName: String!): Community
   googleAuthUrl: String
   implicitLogin: ImplicitLoginResponse
 }

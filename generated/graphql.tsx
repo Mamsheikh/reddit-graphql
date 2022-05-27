@@ -17,10 +17,13 @@ export type Scalars = {
 
 export type Community = {
   __typename?: 'Community';
+  createdAt?: Maybe<Scalars['String']>;
   creatorId?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['String']>;
   image?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
   numberOfMembers?: Maybe<Scalars['Int']>;
+  privacyType?: Maybe<Scalars['String']>;
 };
 
 export type CreateUserInput = {
@@ -68,8 +71,14 @@ export type MutationLoginArgs = {
 
 export type Query = {
   __typename?: 'Query';
+  getCommunity?: Maybe<Community>;
   googleAuthUrl?: Maybe<Scalars['String']>;
   implicitLogin?: Maybe<ImplicitLoginResponse>;
+};
+
+
+export type QueryGetCommunityArgs = {
+  communityName: Scalars['String'];
 };
 
 export type RegisterResponse = {
@@ -87,6 +96,13 @@ export type CreateCommunityMutationVariables = Exact<{
 
 
 export type CreateCommunityMutation = { __typename?: 'Mutation', createCommunity?: { __typename?: 'Community', name?: string | null, creatorId?: string | null, image?: string | null, numberOfMembers?: number | null } | null };
+
+export type GetCommunityQueryVariables = Exact<{
+  communityName: Scalars['String'];
+}>;
+
+
+export type GetCommunityQuery = { __typename?: 'Query', getCommunity?: { __typename?: 'Community', id?: string | null, name?: string | null, creatorId?: string | null, image?: string | null, numberOfMembers?: number | null, createdAt?: string | null, privacyType?: string | null } | null };
 
 export type LoginMutationVariables = Exact<{
   credentials: CreateUserInput;
@@ -157,6 +173,47 @@ export function useCreateCommunityMutation(baseOptions?: Apollo.MutationHookOpti
 export type CreateCommunityMutationHookResult = ReturnType<typeof useCreateCommunityMutation>;
 export type CreateCommunityMutationResult = Apollo.MutationResult<CreateCommunityMutation>;
 export type CreateCommunityMutationOptions = Apollo.BaseMutationOptions<CreateCommunityMutation, CreateCommunityMutationVariables>;
+export const GetCommunityDocument = gql`
+    query GetCommunity($communityName: String!) {
+  getCommunity(communityName: $communityName) {
+    id
+    name
+    creatorId
+    image
+    numberOfMembers
+    createdAt
+    privacyType
+  }
+}
+    `;
+
+/**
+ * __useGetCommunityQuery__
+ *
+ * To run a query within a React component, call `useGetCommunityQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetCommunityQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetCommunityQuery({
+ *   variables: {
+ *      communityName: // value for 'communityName'
+ *   },
+ * });
+ */
+export function useGetCommunityQuery(baseOptions: Apollo.QueryHookOptions<GetCommunityQuery, GetCommunityQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetCommunityQuery, GetCommunityQueryVariables>(GetCommunityDocument, options);
+      }
+export function useGetCommunityLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetCommunityQuery, GetCommunityQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetCommunityQuery, GetCommunityQueryVariables>(GetCommunityDocument, options);
+        }
+export type GetCommunityQueryHookResult = ReturnType<typeof useGetCommunityQuery>;
+export type GetCommunityLazyQueryHookResult = ReturnType<typeof useGetCommunityLazyQuery>;
+export type GetCommunityQueryResult = Apollo.QueryResult<GetCommunityQuery, GetCommunityQueryVariables>;
 export const LoginDocument = gql`
     mutation Login($credentials: CreateUserInput!) {
   login(credentials: $credentials) {
