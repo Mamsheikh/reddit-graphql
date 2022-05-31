@@ -12,10 +12,16 @@ type HeaderProps = {
 };
 
 const Header: React.FC<HeaderProps> = ({ communityData }) => {
-  const { communityStateValue, loading } = useCommunityData();
+  const {
+    communityStateValue,
+    loading,
+    onJoinOrLeaveCommunity,
+    joinLoading,
+    leaveLoading,
+  } = useCommunityData();
   // console.log('imageUrl', communityStateValue.currentCommunity?.imageURL);
   const isJoined = !!communityStateValue.communities.find(
-    (item) => item.id === communityData.id
+    (item) => item?.id === communityData.id
   );
   // console.log(communityStateValue.communities);
   return (
@@ -55,8 +61,12 @@ const Header: React.FC<HeaderProps> = ({ communityData }) => {
               </Text>
             </Flex>
             <Button
-              isLoading={loading}
-              // onClick={() => onJoinOrLeaveCommunity(communityData, isJoined)}
+              isLoading={
+                loading ? loading : joinLoading ? joinLoading : leaveLoading
+              }
+              onClick={() =>
+                onJoinOrLeaveCommunity(communityData.id!, isJoined)
+              }
               variant={isJoined ? 'outline' : 'solid'}
               height='30px'
               pr={6}

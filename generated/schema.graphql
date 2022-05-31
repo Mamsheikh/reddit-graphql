@@ -29,6 +29,8 @@ type Mutation {
   createCommunity(communityName: String!, communityType: String): Community
   createUser(credentials: CreateUserInput!): registerResponse
   googleLogin(code: String!): registerResponse
+  joinCommunity(communityId: String!): Community
+  leaveCommunity(communityId: String!): Community
   login(credentials: CreateUserInput!): registerResponse
 }
 

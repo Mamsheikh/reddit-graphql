@@ -15,7 +15,7 @@ const OAuthButtons: React.FC = () => {
   // console.log(code);
   // const { signInWithGoogle } = useAuth();
   const [authUrl] = useAuthUrlLazyQuery();
-  const [googleLogin] = useGoogleLoginMutation({
+  const [googleLogin, { loading }] = useGoogleLoginMutation({
     onCompleted() {
       setAuthModalState((prev) => ({
         ...prev,
@@ -65,7 +65,7 @@ const OAuthButtons: React.FC = () => {
         mb={2}
         // onClick={renderProps.onClick}
         // disabled={renderProps.disabled}
-        // isLoading={loading}
+        isLoading={loading}
         onClick={handleAuthorize}
       >
         <Image src='/images/googlelogo.png' alt='logo' mr={2} height='20px' />

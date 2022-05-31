@@ -89,6 +89,8 @@ export interface NexusGenFieldTypes {
     createCommunity: NexusGenRootTypes['Community'] | null; // Community
     createUser: NexusGenRootTypes['registerResponse'] | null; // registerResponse
     googleLogin: NexusGenRootTypes['registerResponse'] | null; // registerResponse
+    joinCommunity: NexusGenRootTypes['Community'] | null; // Community
+    leaveCommunity: NexusGenRootTypes['Community'] | null; // Community
     login: NexusGenRootTypes['registerResponse'] | null; // registerResponse
   }
   Query: { // field return type
@@ -126,6 +128,8 @@ export interface NexusGenFieldTypeNames {
     createCommunity: 'Community'
     createUser: 'registerResponse'
     googleLogin: 'registerResponse'
+    joinCommunity: 'Community'
+    leaveCommunity: 'Community'
     login: 'registerResponse'
   }
   Query: { // field return type name
@@ -153,6 +157,12 @@ export interface NexusGenArgTypes {
     }
     googleLogin: { // args
       code: string; // String!
+    }
+    joinCommunity: { // args
+      communityId: string; // String!
+    }
+    leaveCommunity: { // args
+      communityId: string; // String!
     }
     login: { // args
       credentials: NexusGenInputs['CreateUserInput']; // CreateUserInput!

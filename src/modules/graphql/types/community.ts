@@ -9,6 +9,8 @@ import {
 import { createCommunityResolver } from '../resolvers/createCommunityResolver';
 import { getCommunityResolver } from '../resolvers/getCommunityResolver';
 import { getUsersCommunitesResolver } from '../resolvers/getUsersCommunitiesResolver';
+import { joinCommunityResolver } from '../resolvers/joinCommunityResolver';
+import { leaveCommunityResolver } from '../resolvers/leaveCommunityResolver';
 
 export const createCommunity = extendType({
   type: 'Mutation',
@@ -41,6 +43,28 @@ export const getUsersCommunities = extendType({
     t.field('getUsersCommunities', {
       type: list(Community),
       resolve: getUsersCommunitesResolver,
+    });
+  },
+});
+
+export const joinCommunity = extendType({
+  type: 'Mutation',
+  definition(t) {
+    t.field('joinCommunity', {
+      type: Community,
+      args: { communityId: nonNull(stringArg()) },
+      resolve: joinCommunityResolver,
+    });
+  },
+});
+
+export const leaveCommunity = extendType({
+  type: 'Mutation',
+  definition(t) {
+    t.field('leaveCommunity', {
+      type: Community,
+      args: { communityId: nonNull(stringArg()) },
+      resolve: leaveCommunityResolver,
     });
   },
 });

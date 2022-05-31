@@ -13,7 +13,7 @@ export const implicitLoginResolver: FieldResolver<
       throw new Error('not logged in');
     }
     const decodedToken = await verifyToken(token);
-    // console.log('id', decodedToken.userId);
+    console.log('id', decodedToken.userId);
     const user = await prisma.user.findUnique({
       where: { id: decodedToken.userId },
     });

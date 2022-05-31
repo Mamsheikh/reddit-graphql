@@ -33,3 +33,23 @@ query GetUsersCommunities {
     createdAt
   }
 }
+
+mutation LeaveCommunity($communityId: String!) {
+  leaveCommunity(communityId: $communityId) {
+    id
+    name
+    image
+    numberOfMembers
+    createdAt
+  }
+}
+
+mutation JoinCommunity($communityId: String!) {
+  joinCommunity(communityId: $communityId) {
+    id
+    name
+    image
+    numberOfMembers
+    createdAt
+  }
+}
