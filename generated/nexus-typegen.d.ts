@@ -93,6 +93,7 @@ export interface NexusGenFieldTypes {
   }
   Query: { // field return type
     getCommunity: NexusGenRootTypes['Community'] | null; // Community
+    getUsersCommunities: Array<NexusGenRootTypes['Community'] | null> | null; // [Community]
     googleAuthUrl: string | null; // String
     implicitLogin: NexusGenRootTypes['ImplicitLoginResponse'] | null; // ImplicitLoginResponse
   }
@@ -129,6 +130,7 @@ export interface NexusGenFieldTypeNames {
   }
   Query: { // field return type name
     getCommunity: 'Community'
+    getUsersCommunities: 'Community'
     googleAuthUrl: 'String'
     implicitLogin: 'ImplicitLoginResponse'
   }

@@ -21,3 +21,15 @@ query GetCommunity($communityName: String!) {
     privacyType
   }
 }
+
+query GetUsersCommunities {
+  getUsersCommunities {
+    name
+    id
+    image
+    numberOfMembers
+    privacyType
+    creatorId
+    createdAt
+  }
+}

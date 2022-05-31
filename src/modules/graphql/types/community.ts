@@ -1,6 +1,14 @@
-import { extendType, nonNull, nullable, objectType, stringArg } from 'nexus';
+import {
+  extendType,
+  list,
+  nonNull,
+  nullable,
+  objectType,
+  stringArg,
+} from 'nexus';
 import { createCommunityResolver } from '../resolvers/createCommunityResolver';
 import { getCommunityResolver } from '../resolvers/getCommunityResolver';
+import { getUsersCommunitesResolver } from '../resolvers/getUsersCommunitiesResolver';
 
 export const createCommunity = extendType({
   type: 'Mutation',
@@ -23,6 +31,16 @@ export const getCommunity = extendType({
       type: Community,
       args: { communityName: nonNull(stringArg()) },
       resolve: getCommunityResolver,
+    });
+  },
+});
+
+export const getUsersCommunities = extendType({
+  type: 'Query',
+  definition(t) {
+    t.field('getUsersCommunities', {
+      type: list(Community),
+      resolve: getUsersCommunitesResolver,
     });
   },
 });

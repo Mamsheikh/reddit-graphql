@@ -1,16 +1,22 @@
-import { prisma } from '../../lib/prisma';
+import { prisma } from '../../../lib/prisma';
 import { GetServerSidePropsContext } from 'next';
 // import { Props } from 'next/script';
 import React, { useEffect, useState } from 'react';
 import {
+  Community,
   GetCommunityDocument,
   GetCommunityQuery,
-} from '../../../generated/graphql';
-import { Community } from '../../atoms/communityAtom';
+  useGetUsersCommunitiesQuery,
+} from '../../../../generated/graphql';
+// import { Community } from '../../../atoms/communityAtom';
 // import { ImplicitLoginQuery, ImplicitLoginDocument } from '../../../generated/graphql';
-import { initializeApollo, addApolloState } from '../../lib/apolloClient';
-import NotFound from '../../modules/components/Community/NotFound';
-import Header from '../../modules/components/Community/Header';
+import { initializeApollo, addApolloState } from '../../../lib/apolloClient';
+import NotFound from '../../../modules/components/Community/NotFound';
+import Header from '../../../modules/components/Community/Header';
+import PageContent from '../../../modules/components/Layout/PageContent';
+import useCommunityData from '../../../modules/hooks/useCommunityData';
+// import NotFound from '../../../modules/components/Community/NotFound';
+// import Header from '../../../modules/components/Community/Header';
 
 // type CommunityPageProps = {
 //   communityData: Community;
@@ -23,18 +29,13 @@ const CommunityPage = ({
   numberOfMembers,
   privacyType,
   createdAt,
-  imageURL,
+  image,
 }: Community) => {
   //   console.log(communityData);
-  const [communityData, setCommunityData] = useState({
-    id: '',
-    name: '',
-    creatorId: '',
-    numberOfMembers: '',
-    privacyType: '',
-    createdAt,
-    imageURL,
-  });
+  // const { data } = useGetUsersCommunitiesQuery();
+  const { communityStateValue } = useCommunityData();
+  console.log('here is data', communityStateValue.communities);
+  const [communityData, setCommunityData] = useState<Community>();
   useEffect(() => {
     setCommunityData({
       id,
@@ -43,14 +44,18 @@ const CommunityPage = ({
       numberOfMembers,
       privacyType,
       createdAt,
-      imageURL,
+      image,
     });
   }, []);
 
   if (!id || !name) return <NotFound />;
   return (
     <>
-      <Header communityData={communityData} />
+      {communityData && <Header communityData={communityData} />}
+      <PageContent>
+        <>LHS</>
+        <>RHS</>
+      </PageContent>
     </>
   );
 };

@@ -1,14 +1,31 @@
 import { Flex, Image } from '@chakra-ui/react';
-import React from 'react';
-import { useRecoilValue } from 'recoil';
-import { userState } from '../../../atoms/userAtom';
+import React, { useEffect } from 'react';
+// import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useImplicitLoginQuery } from '../../../../generated/graphql';
+// import { userState } from '../../../atoms/userAtom';
+import useUserData from '../../hooks/useUserData';
 import Directory from './Directory';
 import RightContent from './RightContent';
 import SearchInput from './SearchInput';
 
 const Navbar: React.FC = () => {
-  const userAtomState = useRecoilValue(userState);
-  // console.log('user', userAtomState);
+  // const setUserState = useSetRecoilState(userState);
+  const { data } = useImplicitLoginQuery();
+  const { userStateValue, setUserStateValue } = useUserData();
+
+  useEffect(() => {
+    if (data?.implicitLogin) {
+      setUserStateValue({
+        email: data.implicitLogin?.email,
+        displayName: data.implicitLogin?.displayName,
+        id: data.implicitLogin?.id,
+        image: data.implicitLogin?.image,
+        loggedIn: data.implicitLogin.loggedIn,
+      });
+    }
+  }, [data?.implicitLogin]);
+
+  console.log({ userStateValue });
   return (
     <Flex
       bg='white'
@@ -33,7 +50,7 @@ const Navbar: React.FC = () => {
       </Flex>
       <Directory />
       <SearchInput />
-      <RightContent user={userAtomState} />
+      <RightContent user={userStateValue} />
       {/* {user && <Directory />}
   <SearchInput user={user} />
   <RightContent user={user} /> */}

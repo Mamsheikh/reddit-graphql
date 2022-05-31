@@ -2,15 +2,15 @@ import { atom } from 'recoil';
 
 export interface UserModalState {
   loggedIn: boolean;
-  email: string | null;
-  displayName?: string;
-  image?: string;
-  id?: string;
+  email: string | undefined | null;
+  displayName?: string | null | undefined;
+  image?: string | null | undefined;
+  id?: string | null | undefined;
 }
 
 const defaultModalState: UserModalState = {
   loggedIn: false,
-  email: null,
+  email: undefined,
 };
 
 export const userState = atom<UserModalState>({

@@ -25,6 +25,7 @@ export const createCommunityResolver: FieldResolver<
       name: communityName,
       privacyType: communityType,
       numberOfMembers: 1,
+      users: { connect: { id: user.id } },
     },
   });
   return {

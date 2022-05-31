@@ -72,6 +72,7 @@ export type MutationLoginArgs = {
 export type Query = {
   __typename?: 'Query';
   getCommunity?: Maybe<Community>;
+  getUsersCommunities?: Maybe<Array<Maybe<Community>>>;
   googleAuthUrl?: Maybe<Scalars['String']>;
   implicitLogin?: Maybe<ImplicitLoginResponse>;
 };
@@ -103,6 +104,11 @@ export type GetCommunityQueryVariables = Exact<{
 
 
 export type GetCommunityQuery = { __typename?: 'Query', getCommunity?: { __typename?: 'Community', id?: string | null, name?: string | null, creatorId?: string | null, image?: string | null, numberOfMembers?: number | null, createdAt?: string | null, privacyType?: string | null } | null };
+
+export type GetUsersCommunitiesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetUsersCommunitiesQuery = { __typename?: 'Query', getUsersCommunities?: Array<{ __typename?: 'Community', name?: string | null, id?: string | null, image?: string | null, numberOfMembers?: number | null, privacyType?: string | null, creatorId?: string | null, createdAt?: string | null } | null> | null };
 
 export type LoginMutationVariables = Exact<{
   credentials: CreateUserInput;
@@ -214,6 +220,46 @@ export function useGetCommunityLazyQuery(baseOptions?: Apollo.LazyQueryHookOptio
 export type GetCommunityQueryHookResult = ReturnType<typeof useGetCommunityQuery>;
 export type GetCommunityLazyQueryHookResult = ReturnType<typeof useGetCommunityLazyQuery>;
 export type GetCommunityQueryResult = Apollo.QueryResult<GetCommunityQuery, GetCommunityQueryVariables>;
+export const GetUsersCommunitiesDocument = gql`
+    query GetUsersCommunities {
+  getUsersCommunities {
+    name
+    id
+    image
+    numberOfMembers
+    privacyType
+    creatorId
+    createdAt
+  }
+}
+    `;
+
+/**
+ * __useGetUsersCommunitiesQuery__
+ *
+ * To run a query within a React component, call `useGetUsersCommunitiesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUsersCommunitiesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUsersCommunitiesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetUsersCommunitiesQuery(baseOptions?: Apollo.QueryHookOptions<GetUsersCommunitiesQuery, GetUsersCommunitiesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetUsersCommunitiesQuery, GetUsersCommunitiesQueryVariables>(GetUsersCommunitiesDocument, options);
+      }
+export function useGetUsersCommunitiesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUsersCommunitiesQuery, GetUsersCommunitiesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetUsersCommunitiesQuery, GetUsersCommunitiesQueryVariables>(GetUsersCommunitiesDocument, options);
+        }
+export type GetUsersCommunitiesQueryHookResult = ReturnType<typeof useGetUsersCommunitiesQuery>;
+export type GetUsersCommunitiesLazyQueryHookResult = ReturnType<typeof useGetUsersCommunitiesLazyQuery>;
+export type GetUsersCommunitiesQueryResult = Apollo.QueryResult<GetUsersCommunitiesQuery, GetUsersCommunitiesQueryVariables>;
 export const LoginDocument = gql`
     mutation Login($credentials: CreateUserInput!) {
   login(credentials: $credentials) {
