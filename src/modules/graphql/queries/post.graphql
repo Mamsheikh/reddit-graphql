@@ -7,3 +7,13 @@ mutation CreatePost($input: createPostInput!) {
     userId
   }
 }
+
+query GetPosts($communityId: String!) {
+  getPosts(communityId: $communityId) {
+    title
+    communityId
+    body
+    image
+    userId
+  }
+}

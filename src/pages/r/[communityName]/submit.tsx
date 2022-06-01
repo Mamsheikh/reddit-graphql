@@ -19,7 +19,7 @@ const Submit: React.FC<submitProps> = () => {
           {userStateValue && (
             <NewPostForm
               user={userStateValue}
-              communityName={communityName}
+              communityName={communityName as string}
               // communityImageURL={communityStateValue.currentCommunity?.imageURL}
             />
           )}

@@ -1,5 +1,13 @@
-import { extendType, inputObjectType, nonNull, objectType } from 'nexus';
+import {
+  extendType,
+  inputObjectType,
+  list,
+  nonNull,
+  objectType,
+  stringArg,
+} from 'nexus';
 import { createPostResolver } from '../resolvers/createPostResolver';
+import { getPostsResolver } from '../resolvers/getPostsResolver';
 
 export const createPost = extendType({
   type: 'Mutation',
@@ -8,6 +16,17 @@ export const createPost = extendType({
       type: post,
       args: { input: nonNull(createPostInput) },
       resolve: createPostResolver,
+    });
+  },
+});
+
+export const getPosts = extendType({
+  type: 'Query',
+  definition(t) {
+    t.field('getPosts', {
+      type: list(post),
+      args: { communityId: nonNull(stringArg()) },
+      resolve: getPostsResolver,
     });
   },
 });

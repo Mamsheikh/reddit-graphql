@@ -16,6 +16,7 @@ import Header from '../../../modules/components/Community/Header';
 import PageContent from '../../../modules/components/Layout/PageContent';
 import useCommunityData from '../../../modules/hooks/useCommunityData';
 import CreatePostLink from '../../../modules/components/Community/CreatePostLink';
+import Posts from '../../../modules/components/Posts';
 // import NotFound from '../../../modules/components/Community/NotFound';
 // import Header from '../../../modules/components/Community/Header';
 
@@ -56,6 +57,7 @@ const CommunityPage = ({
       <PageContent>
         <>
           <CreatePostLink />
+          <Posts />
         </>
         <>RHS</>
       </PageContent>

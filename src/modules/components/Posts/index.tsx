@@ -1,11 +1,5 @@
 import { Stack } from '@chakra-ui/react';
-import { collection, getDocs, orderBy, query, where } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
-import { useAuthState } from 'react-firebase-hooks/auth';
-import { Community } from '../../atoms/communtiesAtom';
-import { Post } from '../../atoms/postsAtom';
-import { auth, firestore } from '../../firebase/clientApp';
-import usePosts from '../../hooks/usePosts';
 import PostItem from './PostItem';
 import PostLoader from './PostLoader';
 

@@ -51,6 +51,7 @@ type Post {
 
 type Query {
   getCommunity(communityName: String!): Community
+  getPosts(communityId: String!): [Post]
   getUsersCommunities: [Community]
   googleAuthUrl: String
   implicitLogin: ImplicitLoginResponse
