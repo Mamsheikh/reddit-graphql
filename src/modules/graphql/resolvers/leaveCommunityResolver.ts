@@ -31,7 +31,7 @@ export const leaveCommunityResolver: FieldResolver<
     },
     data: {
       users: { disconnect: { id: decodedJwt.userId } },
-      numberOfMembers: -1,
+      numberOfMembers: { decrement: 1 },
     },
   });
   // return;

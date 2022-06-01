@@ -1,17 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useRecoilState } from 'recoil';
 import {
   Community,
   useGetUsersCommunitiesLazyQuery,
-  useGetUsersCommunitiesQuery,
   useJoinCommunityMutation,
   useLeaveCommunityMutation,
 } from '../../../generated/graphql';
 import { communityState } from '../../atoms/communityAtom';
-import useUserData from './useUserData';
+// import useUserData from './useUserData';
 
 const useCommunityData = () => {
-  const { userStateValue } = useUserData();
+  // const { userStateValue } = useUserData();
   const [communityStateValue, setCommunityStateValue] =
     useRecoilState(communityState);
 

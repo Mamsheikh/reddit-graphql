@@ -29,7 +29,7 @@ export const joinCommunityResolver: FieldResolver<
     where: { id: communityId },
     data: {
       users: { connect: { id: decodedJwt.userId } },
-      numberOfMembers: -1,
+      numberOfMembers: { increment: 1 },
     },
   });
 };
