@@ -18,6 +18,12 @@ export interface NexusGenInputs {
     email: string; // String!
     password: string; // String!
   }
+  createPostInput: { // input type
+    body?: string | null; // String
+    communityId: string; // String!
+    image?: string | null; // String
+    title: string; // String!
+  }
 }
 
 export interface NexusGenEnums {
@@ -53,6 +59,13 @@ export interface NexusGenObjects {
     loggedIn: boolean; // Boolean!
   }
   Mutation: {};
+  Post: { // root type
+    body?: string | null; // String
+    communityId?: string | null; // String
+    image?: string | null; // String
+    title?: string | null; // String
+    userId?: string | null; // String
+  }
   Query: {};
   registerResponse: { // root type
     displayName?: string | null; // String
@@ -96,11 +109,19 @@ export interface NexusGenFieldTypes {
   Mutation: { // field return type
     createCommunity: NexusGenRootTypes['Community'] | null; // Community
     createImageSignature: NexusGenRootTypes['ImageSignature'] | null; // ImageSignature
+    createPost: NexusGenRootTypes['Post'] | null; // Post
     createUser: NexusGenRootTypes['registerResponse'] | null; // registerResponse
     googleLogin: NexusGenRootTypes['registerResponse'] | null; // registerResponse
     joinCommunity: NexusGenRootTypes['Community'] | null; // Community
     leaveCommunity: NexusGenRootTypes['Community'] | null; // Community
     login: NexusGenRootTypes['registerResponse'] | null; // registerResponse
+  }
+  Post: { // field return type
+    body: string | null; // String
+    communityId: string | null; // String
+    image: string | null; // String
+    title: string | null; // String
+    userId: string | null; // String
   }
   Query: { // field return type
     getCommunity: NexusGenRootTypes['Community'] | null; // Community
@@ -140,11 +161,19 @@ export interface NexusGenFieldTypeNames {
   Mutation: { // field return type name
     createCommunity: 'Community'
     createImageSignature: 'ImageSignature'
+    createPost: 'Post'
     createUser: 'registerResponse'
     googleLogin: 'registerResponse'
     joinCommunity: 'Community'
     leaveCommunity: 'Community'
     login: 'registerResponse'
+  }
+  Post: { // field return type name
+    body: 'String'
+    communityId: 'String'
+    image: 'String'
+    title: 'String'
+    userId: 'String'
   }
   Query: { // field return type name
     getCommunity: 'Community'
@@ -165,6 +194,9 @@ export interface NexusGenArgTypes {
     createCommunity: { // args
       communityName: string; // String!
       communityType?: string | null; // String
+    }
+    createPost: { // args
+      input: NexusGenInputs['createPostInput']; // createPostInput!
     }
     createUser: { // args
       credentials: NexusGenInputs['CreateUserInput']; // CreateUserInput!

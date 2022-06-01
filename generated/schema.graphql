@@ -33,6 +33,7 @@ type ImplicitLoginResponse {
 type Mutation {
   createCommunity(communityName: String!, communityType: String): Community
   createImageSignature: ImageSignature
+  createPost(input: createPostInput!): Post
   createUser(credentials: CreateUserInput!): registerResponse
   googleLogin(code: String!): registerResponse
   joinCommunity(communityId: String!): Community
@@ -40,11 +41,26 @@ type Mutation {
   login(credentials: CreateUserInput!): registerResponse
 }
 
+type Post {
+  body: String
+  communityId: String
+  image: String
+  title: String
+  userId: String
+}
+
 type Query {
   getCommunity(communityName: String!): Community
   getUsersCommunities: [Community]
   googleAuthUrl: String
   implicitLogin: ImplicitLoginResponse
+}
+
+input createPostInput {
+  body: String
+  communityId: String!
+  image: String
+  title: String!
 }
 
 type registerResponse {

@@ -18,11 +18,15 @@ import ImageUpload from './PostForm/ImageUpload';
 // import { User } from 'firebase/auth';
 import { useRouter } from 'next/router';
 import useSelectFile from '../../hooks/useSelectFile';
-import { useCreateImageSignatureMutation } from '../../../../generated/graphql';
+import {
+  useCreateImageSignatureMutation,
+  useCreatePostMutation,
+} from '../../../../generated/graphql';
 
 type NewPostFormProps = {
   user: any;
   communityImageURL?: string;
+  communityName?: string;
 };
 
 const formTabs: TabItem[] = [
@@ -53,10 +57,11 @@ export type TabItem = {
   icon: typeof Icon.arguments;
 };
 
-const NewPostForm: React.FC<NewPostFormProps> = () => {
+const NewPostForm: React.FC<NewPostFormProps> = ({ communityName }) => {
   const [createImageSignature] = useCreateImageSignatureMutation();
   const router = useRouter();
   const [selectedTab, setSelectedTab] = useState(formTabs[0].title);
+  const [imageURL, setImageURL] = useState('');
   const [textInputs, setTextInputs] = useState({
     title: '',
     body: '',
@@ -69,8 +74,9 @@ const NewPostForm: React.FC<NewPostFormProps> = () => {
     previewImage,
     setPreviewImage,
   } = useSelectFile();
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
+  // const [loading, setLoading] = useState(false);
+  // const [error, setError] = useState(false);
+  const [createPost, { loading, error }] = useCreatePostMutation();
 
   const handleCreatePost = async () => {
     const { communityId } = router.query;
@@ -84,10 +90,34 @@ const NewPostForm: React.FC<NewPostFormProps> = () => {
           signatureData.createImageSignature?.signature!,
           signatureData.createImageSignature?.timestamp!
         );
-        console.log(data);
+        // console.log(data);
+        setImageURL(data.secure_url);
+        await createPost({
+          variables: {
+            input: {
+              communityId: communityName as string,
+              title: textInputs.title,
+              body: textInputs.body,
+              image: data.secure_url,
+            },
+          },
+        });
+        return;
       }
     }
+
+    await createPost({
+      variables: {
+        input: {
+          communityId: communityName as string,
+          title: textInputs.title,
+          body: textInputs.body,
+          // image: imageURL,
+        },
+      },
+    });
   };
+
   const onTextChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {

@@ -1,4 +1,5 @@
 import { Box, Text } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
 import React from 'react';
 import PageContent from '../../../modules/components/Layout/PageContent';
 import NewPostForm from '../../../modules/components/Posts/NewPostForm';
@@ -7,6 +8,8 @@ import useUserData from '../../../modules/hooks/useUserData';
 type submitProps = {};
 
 const Submit: React.FC<submitProps> = () => {
+  const router = useRouter();
+  const { communityName } = router.query;
   const { userStateValue } = useUserData();
   return (
     <PageContent>
@@ -16,6 +19,7 @@ const Submit: React.FC<submitProps> = () => {
           {userStateValue && (
             <NewPostForm
               user={userStateValue}
+              communityName={communityName}
               // communityImageURL={communityStateValue.currentCommunity?.imageURL}
             />
           )}

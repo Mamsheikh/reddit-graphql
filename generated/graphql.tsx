@@ -50,6 +50,7 @@ export type Mutation = {
   __typename?: 'Mutation';
   createCommunity?: Maybe<Community>;
   createImageSignature?: Maybe<ImageSignature>;
+  createPost?: Maybe<Post>;
   createUser?: Maybe<RegisterResponse>;
   googleLogin?: Maybe<RegisterResponse>;
   joinCommunity?: Maybe<Community>;
@@ -61,6 +62,11 @@ export type Mutation = {
 export type MutationCreateCommunityArgs = {
   communityName: Scalars['String'];
   communityType?: InputMaybe<Scalars['String']>;
+};
+
+
+export type MutationCreatePostArgs = {
+  input: CreatePostInput;
 };
 
 
@@ -88,6 +94,15 @@ export type MutationLoginArgs = {
   credentials: CreateUserInput;
 };
 
+export type Post = {
+  __typename?: 'Post';
+  body?: Maybe<Scalars['String']>;
+  communityId?: Maybe<Scalars['String']>;
+  image?: Maybe<Scalars['String']>;
+  title?: Maybe<Scalars['String']>;
+  userId?: Maybe<Scalars['String']>;
+};
+
 export type Query = {
   __typename?: 'Query';
   getCommunity?: Maybe<Community>;
@@ -99,6 +114,13 @@ export type Query = {
 
 export type QueryGetCommunityArgs = {
   communityName: Scalars['String'];
+};
+
+export type CreatePostInput = {
+  body?: InputMaybe<Scalars['String']>;
+  communityId: Scalars['String'];
+  image?: InputMaybe<Scalars['String']>;
+  title: Scalars['String'];
 };
 
 export type RegisterResponse = {
@@ -147,6 +169,13 @@ export type CreateImageSignatureMutationVariables = Exact<{ [key: string]: never
 
 
 export type CreateImageSignatureMutation = { __typename?: 'Mutation', createImageSignature?: { __typename?: 'ImageSignature', signature?: string | null, timestamp?: number | null } | null };
+
+export type CreatePostMutationVariables = Exact<{
+  input: CreatePostInput;
+}>;
+
+
+export type CreatePostMutation = { __typename?: 'Mutation', createPost?: { __typename?: 'Post', title?: string | null, body?: string | null, communityId?: string | null, image?: string | null, userId?: string | null } | null };
 
 export type LoginMutationVariables = Exact<{
   credentials: CreateUserInput;
@@ -405,6 +434,43 @@ export function useCreateImageSignatureMutation(baseOptions?: Apollo.MutationHoo
 export type CreateImageSignatureMutationHookResult = ReturnType<typeof useCreateImageSignatureMutation>;
 export type CreateImageSignatureMutationResult = Apollo.MutationResult<CreateImageSignatureMutation>;
 export type CreateImageSignatureMutationOptions = Apollo.BaseMutationOptions<CreateImageSignatureMutation, CreateImageSignatureMutationVariables>;
+export const CreatePostDocument = gql`
+    mutation CreatePost($input: createPostInput!) {
+  createPost(input: $input) {
+    title
+    body
+    communityId
+    image
+    userId
+  }
+}
+    `;
+export type CreatePostMutationFn = Apollo.MutationFunction<CreatePostMutation, CreatePostMutationVariables>;
+
+/**
+ * __useCreatePostMutation__
+ *
+ * To run a mutation, you first call `useCreatePostMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreatePostMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createPostMutation, { data, loading, error }] = useCreatePostMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreatePostMutation(baseOptions?: Apollo.MutationHookOptions<CreatePostMutation, CreatePostMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreatePostMutation, CreatePostMutationVariables>(CreatePostDocument, options);
+      }
+export type CreatePostMutationHookResult = ReturnType<typeof useCreatePostMutation>;
+export type CreatePostMutationResult = Apollo.MutationResult<CreatePostMutation>;
+export type CreatePostMutationOptions = Apollo.BaseMutationOptions<CreatePostMutation, CreatePostMutationVariables>;
 export const LoginDocument = gql`
     mutation Login($credentials: CreateUserInput!) {
   login(credentials: $credentials) {
