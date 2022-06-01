@@ -31,6 +31,12 @@ export type CreateUserInput = {
   password: Scalars['String'];
 };
 
+export type ImageSignature = {
+  __typename?: 'ImageSignature';
+  signature?: Maybe<Scalars['String']>;
+  timestamp?: Maybe<Scalars['Int']>;
+};
+
 export type ImplicitLoginResponse = {
   __typename?: 'ImplicitLoginResponse';
   displayName?: Maybe<Scalars['String']>;
@@ -43,6 +49,7 @@ export type ImplicitLoginResponse = {
 export type Mutation = {
   __typename?: 'Mutation';
   createCommunity?: Maybe<Community>;
+  createImageSignature?: Maybe<ImageSignature>;
   createUser?: Maybe<RegisterResponse>;
   googleLogin?: Maybe<RegisterResponse>;
   joinCommunity?: Maybe<Community>;
@@ -135,6 +142,11 @@ export type JoinCommunityMutationVariables = Exact<{
 
 
 export type JoinCommunityMutation = { __typename?: 'Mutation', joinCommunity?: { __typename?: 'Community', id?: string | null, name?: string | null, image?: string | null, numberOfMembers?: number | null, createdAt?: string | null } | null };
+
+export type CreateImageSignatureMutationVariables = Exact<{ [key: string]: never; }>;
+
+
+export type CreateImageSignatureMutation = { __typename?: 'Mutation', createImageSignature?: { __typename?: 'ImageSignature', signature?: string | null, timestamp?: number | null } | null };
 
 export type LoginMutationVariables = Exact<{
   credentials: CreateUserInput;
@@ -360,6 +372,39 @@ export function useJoinCommunityMutation(baseOptions?: Apollo.MutationHookOption
 export type JoinCommunityMutationHookResult = ReturnType<typeof useJoinCommunityMutation>;
 export type JoinCommunityMutationResult = Apollo.MutationResult<JoinCommunityMutation>;
 export type JoinCommunityMutationOptions = Apollo.BaseMutationOptions<JoinCommunityMutation, JoinCommunityMutationVariables>;
+export const CreateImageSignatureDocument = gql`
+    mutation CreateImageSignature {
+  createImageSignature {
+    signature
+    timestamp
+  }
+}
+    `;
+export type CreateImageSignatureMutationFn = Apollo.MutationFunction<CreateImageSignatureMutation, CreateImageSignatureMutationVariables>;
+
+/**
+ * __useCreateImageSignatureMutation__
+ *
+ * To run a mutation, you first call `useCreateImageSignatureMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateImageSignatureMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createImageSignatureMutation, { data, loading, error }] = useCreateImageSignatureMutation({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useCreateImageSignatureMutation(baseOptions?: Apollo.MutationHookOptions<CreateImageSignatureMutation, CreateImageSignatureMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateImageSignatureMutation, CreateImageSignatureMutationVariables>(CreateImageSignatureDocument, options);
+      }
+export type CreateImageSignatureMutationHookResult = ReturnType<typeof useCreateImageSignatureMutation>;
+export type CreateImageSignatureMutationResult = Apollo.MutationResult<CreateImageSignatureMutation>;
+export type CreateImageSignatureMutationOptions = Apollo.BaseMutationOptions<CreateImageSignatureMutation, CreateImageSignatureMutationVariables>;
 export const LoginDocument = gql`
     mutation Login($credentials: CreateUserInput!) {
   login(credentials: $credentials) {

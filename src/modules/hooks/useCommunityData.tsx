@@ -1,18 +1,20 @@
 import { useEffect } from 'react';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import {
   Community,
   useGetUsersCommunitiesLazyQuery,
   useJoinCommunityMutation,
   useLeaveCommunityMutation,
 } from '../../../generated/graphql';
+import { authModalState } from '../../atoms/authModalAtom';
 import { communityState } from '../../atoms/communityAtom';
-// import useUserData from './useUserData';
+import useUserData from './useUserData';
 
 const useCommunityData = () => {
-  // const { userStateValue } = useUserData();
+  const { userStateValue } = useUserData();
   const [communityStateValue, setCommunityStateValue] =
     useRecoilState(communityState);
+  const setAuthModalState = useSetRecoilState(authModalState);
 
   //Join Community Mutation
   const [joinCommunity, { loading: joinLoading }] = useJoinCommunityMutation({
@@ -50,6 +52,10 @@ const useCommunityData = () => {
     });
 
   const onJoinOrLeaveCommunity = (communityId: string, isJoined: boolean) => {
+    if (userStateValue.loggedIn === false) {
+      setAuthModalState({ view: 'login', open: true });
+      return;
+    }
     if (isJoined) {
       leaveCommunity({
         variables: {
@@ -68,7 +74,7 @@ const useCommunityData = () => {
   useEffect(() => {
     // if (!userStateValue.loggedIn === false) return;
     getUsersCommunities();
-  }, []);
+  }, [userStateValue.loggedIn]);
 
   return {
     communityStateValue,

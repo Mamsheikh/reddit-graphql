@@ -15,6 +15,7 @@ import NotFound from '../../../modules/components/Community/NotFound';
 import Header from '../../../modules/components/Community/Header';
 import PageContent from '../../../modules/components/Layout/PageContent';
 import useCommunityData from '../../../modules/hooks/useCommunityData';
+import CreatePostLink from '../../../modules/components/Community/CreatePostLink';
 // import NotFound from '../../../modules/components/Community/NotFound';
 // import Header from '../../../modules/components/Community/Header';
 
@@ -34,7 +35,7 @@ const CommunityPage = ({
   //   console.log(communityData);
   // const { data } = useGetUsersCommunitiesQuery();
   const { communityStateValue } = useCommunityData();
-  console.log('here is data', communityStateValue.communities);
+  // console.log('here is data', communityStateValue.communities);
   const [communityData, setCommunityData] = useState<Community>();
   useEffect(() => {
     setCommunityData({
@@ -53,7 +54,9 @@ const CommunityPage = ({
     <>
       {communityData && <Header communityData={communityData} />}
       <PageContent>
-        <>LHS</>
+        <>
+          <CreatePostLink />
+        </>
         <>RHS</>
       </PageContent>
     </>

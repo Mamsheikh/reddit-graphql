@@ -17,6 +17,11 @@ input CreateUserInput {
   password: String!
 }
 
+type ImageSignature {
+  signature: String
+  timestamp: Int
+}
+
 type ImplicitLoginResponse {
   displayName: String
   email: String
@@ -27,6 +32,7 @@ type ImplicitLoginResponse {
 
 type Mutation {
   createCommunity(communityName: String!, communityType: String): Community
+  createImageSignature: ImageSignature
   createUser(credentials: CreateUserInput!): registerResponse
   googleLogin(code: String!): registerResponse
   joinCommunity(communityId: String!): Community

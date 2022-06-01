@@ -41,6 +41,10 @@ export interface NexusGenObjects {
     numberOfMembers?: number | null; // Int
     privacyType?: string | null; // String
   }
+  ImageSignature: { // root type
+    signature?: string | null; // String
+    timestamp?: number | null; // Int
+  }
   ImplicitLoginResponse: { // root type
     displayName?: string | null; // String
     email?: string | null; // String
@@ -78,6 +82,10 @@ export interface NexusGenFieldTypes {
     numberOfMembers: number | null; // Int
     privacyType: string | null; // String
   }
+  ImageSignature: { // field return type
+    signature: string | null; // String
+    timestamp: number | null; // Int
+  }
   ImplicitLoginResponse: { // field return type
     displayName: string | null; // String
     email: string | null; // String
@@ -87,6 +95,7 @@ export interface NexusGenFieldTypes {
   }
   Mutation: { // field return type
     createCommunity: NexusGenRootTypes['Community'] | null; // Community
+    createImageSignature: NexusGenRootTypes['ImageSignature'] | null; // ImageSignature
     createUser: NexusGenRootTypes['registerResponse'] | null; // registerResponse
     googleLogin: NexusGenRootTypes['registerResponse'] | null; // registerResponse
     joinCommunity: NexusGenRootTypes['Community'] | null; // Community
@@ -117,6 +126,10 @@ export interface NexusGenFieldTypeNames {
     numberOfMembers: 'Int'
     privacyType: 'String'
   }
+  ImageSignature: { // field return type name
+    signature: 'String'
+    timestamp: 'Int'
+  }
   ImplicitLoginResponse: { // field return type name
     displayName: 'String'
     email: 'String'
@@ -126,6 +139,7 @@ export interface NexusGenFieldTypeNames {
   }
   Mutation: { // field return type name
     createCommunity: 'Community'
+    createImageSignature: 'ImageSignature'
     createUser: 'registerResponse'
     googleLogin: 'registerResponse'
     joinCommunity: 'Community'
