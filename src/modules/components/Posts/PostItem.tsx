@@ -22,97 +22,113 @@ import {
   IoArrowUpCircleSharp,
   IoBookmarkOutline,
 } from 'react-icons/io5';
-import { Post } from '../../atoms/postsAtom';
+// import { Post } from '../../atoms/postsAtom';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import {
+  GetPostsDocument,
+  Post,
+  useDeletePostMutation,
+} from '../../../../generated/graphql';
+import useUserData from '../../hooks/useUserData';
+// import { Post } from '../../../atoms/postAtom';
 
 type PostItemProps = {
   post: Post;
-  userIsCreator: boolean;
-  userVoteValue?: number;
-  onVote: (
-    event: React.MouseEvent<SVGElement, MouseEvent>,
-    post: Post,
-    vote: number,
-    communityId: string
-  ) => void;
-  onDeletePost: (post: Post) => Promise<boolean>;
-  onSelectPost?: (post: Post) => void;
+  // userIsCreator: boolean;
+  // userVoteValue?: number;
+  // onVote: (
+  //   event: React.MouseEvent<SVGElement, MouseEvent>,
+  //   post: Post,
+  //   vote: number,
+  //   communityId: string
+  // ) => void;
+  // onDeletePost: (post: Post) => Promise<boolean>;
+  // onSelectPost?: (post: Post) => void;
   homePage?: boolean;
 };
 
 const PostItem: React.FC<PostItemProps> = ({
-  userVoteValue,
+  // userVoteValue,
   post,
-  onDeletePost,
-  onSelectPost,
-  onVote,
-  userIsCreator,
+  // onDeletePost,
+  // onSelectPost,
+  // onVote,
+  // userIsCreator,
   homePage,
 }) => {
   const router = useRouter();
   const [loadingImage, setLoadingImage] = useState(true);
-  const [loadingDelete, setLoadingDelete] = useState(false);
-  const singlePostPage = !onSelectPost;
+  const { userStateValue } = useUserData();
+  // const singlePostPage = !onSelectPost;
 
   const [error, setError] = useState('');
-
+  const [deletePost, { loading: loadingDelete }] = useDeletePostMutation();
   const handleDelete = async (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>
   ) => {
     event.stopPropagation();
-    setLoadingDelete(true);
+    // setLoadingDelete(true);
     try {
-      const success = await onDeletePost(post);
+      const success = await deletePost({
+        variables: {
+          postId: post.id,
+        },
+        refetchQueries: [
+          {
+            query: GetPostsDocument,
+            variables: { communityId: post.community.name },
+          },
+        ],
+      });
       if (!success) {
         throw new Error('Failed to delete post');
       }
       console.log('post deleted successfully');
-      if (singlePostPage) {
-        router.push(`/r/${post.communityId}`);
-      }
+      // if (singlePostPage) {
+      //   router.push(`/r/${post.communityId}`);
+      // }
     } catch (error: any) {
       setError(error.message);
     }
-    setLoadingDelete(false);
+    // setLoadingDelete(false);
   };
   return (
     <Flex
       border={'1px solid'}
       bg='white'
-      borderColor={singlePostPage ? 'white' : 'gray.300'}
-      borderRadius={singlePostPage ? '4px 4px 0px 0px' : '4px'}
-      _hover={{ borderColor: singlePostPage ? 'none' : 'gray.500' }}
-      cursor={singlePostPage ? 'default' : 'pointer'}
-      onClick={() => onSelectPost && onSelectPost(post)}
+      borderColor={'gray.300'}
+      borderRadius={'4px'}
+      _hover={{ color: 'gray.500' }}
+      cursor={'pointer'}
+      // onClick={() => onSelectPost && onSelectPost(post)}
     >
       <Flex
         direction='column'
         align={'center'}
-        bg={singlePostPage ? 'none' : 'gray.100'}
+        // bg={singlePostPage ? 'none' : 'gray.100'}
         p={2}
         width='40px'
-        borderRadius={singlePostPage ? '0' : '3px 0px 0px 3px'}
+        // borderRadius={singlePostPage ? '0' : '3px 0px 0px 3px'}
       >
         <Icon
-          color={userVoteValue === 1 ? 'brand.100' : 'gray.400'}
+          // color={userVoteValue === 1 ? 'brand.100' : 'gray.400'}
+          // as={
+          //   userVoteValue === 1 ? IoArrowUpCircleSharp : IoArrowUpCircleOutline
+          // }
           as={
-            userVoteValue === 1 ? IoArrowUpCircleSharp : IoArrowUpCircleOutline
+            IoArrowUpCircleSharp ? IoArrowUpCircleSharp : IoArrowUpCircleOutline
           }
           fontSize={22}
-          onClick={(event) => onVote(event, post, 1, post.communityId)}
+          // onClick={(event) => onVote(event, post, 1, post.communityId)}
           cursor='pointer'
         />
         <Text fontSize={'9pt'}>{post.voteStatus}</Text>
         <Icon
-          color={userVoteValue === -1 ? '#4379ff' : 'gray.400'}
-          as={
-            userVoteValue === -1
-              ? IoArrowDownCircleSharp
-              : IoArrowDownCircleOutline
-          }
+          // color={userVoteValue === -1 ? '#4379ff' : 'gray.400'}
+          as={IoArrowDownCircleOutline}
           fontSize={22}
-          onClick={(event) => onVote(event, post, -1, post.communityId)}
+          // onClick={(event) => onVote(event, post, -1, post.communityId)}
           cursor='pointer'
         />
       </Flex>
@@ -130,9 +146,9 @@ const PostItem: React.FC<PostItemProps> = ({
             align='center'
             fontSize={'9pt'}
           >
-            {/* Home Page check */}
-            {homePage && (
-              <>
+            <>
+              {/* Home Page check */}
+              {/* {homePage && (
                 {post.imageURL ? (
                   <Image
                     src={post.communityImageURL}
@@ -141,36 +157,36 @@ const PostItem: React.FC<PostItemProps> = ({
                     boxSize='18px'
                     mr={2}
                   />
-                ) : (
-                  <Icon as={FaReddit} fontSize='18pt' mr={1} color='blue.500' />
-                )}
-                <Link href={`r/${post.communityId}`} passHref>
-                  <Text
-                    fontWeight={700}
-                    _hover={{ textDecoration: 'underline' }}
-                    onClick={(event) => event.stopPropagation()}
-                  >{`r/${post.communityId}`}</Text>
-                </Link>
-                <Icon as={BsDot} color='gray.500' fontSize={8} />
-              </>
-            )}
+                ) : ( */}
+              <Icon as={FaReddit} fontSize='18pt' mr={1} color='blue.500' />
+              {/* )} */}
+              <Link href={`r/${post.community.name}`} passHref>
+                <Text
+                  fontWeight={700}
+                  _hover={{ textDecoration: 'underline' }}
+                  onClick={(event) => event.stopPropagation()}
+                >{`r/${post.community.name}`}</Text>
+              </Link>
+              <Icon as={BsDot} color='gray.500' fontSize={8} />
+            </>
+            {/* )} */}
 
             <Text>
-              Posted by u/{post.creatorDisplayName}{' '}
-              {moment(new Date(post.createdAt.seconds * 1000)).fromNow()}
+              Posted by u/{post.user.email}{' '}
+              {moment(new Date(parseInt(post.createdAt))).fromNow()}
             </Text>
           </Stack>
           <Text fontSize={'12pt'} fontWeight={600}>
             {post.title}
           </Text>
           <Text fontSize={'10pt'}>{post.body}</Text>
-          {post.imageURL && (
+          {post.image && (
             <Flex justify={'center'} align='center' p={2}>
               {loadingImage && (
                 <Skeleton height='200px' width={'100%'} borderRadius={4} />
               )}
               <Image
-                src={post.imageURL}
+                src={post.image}
                 alt='post image'
                 maxHeight={'460px'}
                 display={loadingImage ? 'none' : 'unset'}
@@ -188,7 +204,7 @@ const PostItem: React.FC<PostItemProps> = ({
             cursor='pointer'
           >
             <Icon as={BsChat} mr={2} />
-            <Text fontSize={'9pt'}>{post.numberOfComments}</Text>
+            <Text fontSize={'9pt'}>2</Text>
           </Flex>
           <Flex
             align={'center'}
@@ -210,7 +226,7 @@ const PostItem: React.FC<PostItemProps> = ({
             <Icon as={IoBookmarkOutline} mr={2} />
             <Text fontSize='9pt'>Save</Text>
           </Flex>
-          {userIsCreator && (
+          {userStateValue.id === post.userId && (
             <Flex
               align={'center'}
               p='8px 10px'

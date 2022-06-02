@@ -1,15 +1,16 @@
 import { atom } from 'recoil';
+import { Post } from '../../generated/graphql';
 
-export type Post = {
-  id: string;
-  communtityId: string;
-  userId: string;
-  title: string;
-  body: string;
-  numberOfComments: number;
-  image?: string;
-  createdAt: string;
-};
+// export type Post = {
+//   id: string;
+//   communtityId: string;
+//   userId: string;
+//   title: string;
+//   body: string;
+//   numberOfComments: number;
+//   image?: string;
+//   createdAt: string;
+// };
 
 interface PostState {
   selectedPost: Post | null;

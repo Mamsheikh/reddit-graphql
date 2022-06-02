@@ -47,6 +47,9 @@ export interface NexusGenObjects {
     numberOfMembers?: number | null; // Int
     privacyType?: string | null; // String
   }
+  DeletePostResponse: { // root type
+    success: boolean; // Boolean!
+  }
   ImageSignature: { // root type
     signature?: string | null; // String
     timestamp?: number | null; // Int
@@ -62,11 +65,19 @@ export interface NexusGenObjects {
   Post: { // root type
     body?: string | null; // String
     communityId?: string | null; // String
+    createdAt?: string | null; // String
+    id?: string | null; // String
     image?: string | null; // String
     title?: string | null; // String
     userId?: string | null; // String
   }
   Query: {};
+  User: { // root type
+    displayName?: string | null; // String
+    email?: string | null; // String
+    id?: string | null; // String
+    image?: string | null; // String
+  }
   registerResponse: { // root type
     displayName?: string | null; // String
     email?: string | null; // String
@@ -95,6 +106,9 @@ export interface NexusGenFieldTypes {
     numberOfMembers: number | null; // Int
     privacyType: string | null; // String
   }
+  DeletePostResponse: { // field return type
+    success: boolean; // Boolean!
+  }
   ImageSignature: { // field return type
     signature: string | null; // String
     timestamp: number | null; // Int
@@ -111,6 +125,7 @@ export interface NexusGenFieldTypes {
     createImageSignature: NexusGenRootTypes['ImageSignature'] | null; // ImageSignature
     createPost: NexusGenRootTypes['Post'] | null; // Post
     createUser: NexusGenRootTypes['registerResponse'] | null; // registerResponse
+    deletePost: NexusGenRootTypes['DeletePostResponse'] | null; // DeletePostResponse
     googleLogin: NexusGenRootTypes['registerResponse'] | null; // registerResponse
     joinCommunity: NexusGenRootTypes['Community'] | null; // Community
     leaveCommunity: NexusGenRootTypes['Community'] | null; // Community
@@ -118,9 +133,13 @@ export interface NexusGenFieldTypes {
   }
   Post: { // field return type
     body: string | null; // String
+    community: NexusGenRootTypes['Community'] | null; // Community
     communityId: string | null; // String
+    createdAt: string | null; // String
+    id: string | null; // String
     image: string | null; // String
     title: string | null; // String
+    user: NexusGenRootTypes['User'] | null; // User
     userId: string | null; // String
   }
   Query: { // field return type
@@ -129,6 +148,12 @@ export interface NexusGenFieldTypes {
     getUsersCommunities: Array<NexusGenRootTypes['Community'] | null> | null; // [Community]
     googleAuthUrl: string | null; // String
     implicitLogin: NexusGenRootTypes['ImplicitLoginResponse'] | null; // ImplicitLoginResponse
+  }
+  User: { // field return type
+    displayName: string | null; // String
+    email: string | null; // String
+    id: string | null; // String
+    image: string | null; // String
   }
   registerResponse: { // field return type
     displayName: string | null; // String
@@ -148,6 +173,9 @@ export interface NexusGenFieldTypeNames {
     numberOfMembers: 'Int'
     privacyType: 'String'
   }
+  DeletePostResponse: { // field return type name
+    success: 'Boolean'
+  }
   ImageSignature: { // field return type name
     signature: 'String'
     timestamp: 'Int'
@@ -164,6 +192,7 @@ export interface NexusGenFieldTypeNames {
     createImageSignature: 'ImageSignature'
     createPost: 'Post'
     createUser: 'registerResponse'
+    deletePost: 'DeletePostResponse'
     googleLogin: 'registerResponse'
     joinCommunity: 'Community'
     leaveCommunity: 'Community'
@@ -171,9 +200,13 @@ export interface NexusGenFieldTypeNames {
   }
   Post: { // field return type name
     body: 'String'
+    community: 'Community'
     communityId: 'String'
+    createdAt: 'String'
+    id: 'String'
     image: 'String'
     title: 'String'
+    user: 'User'
     userId: 'String'
   }
   Query: { // field return type name
@@ -182,6 +215,12 @@ export interface NexusGenFieldTypeNames {
     getUsersCommunities: 'Community'
     googleAuthUrl: 'String'
     implicitLogin: 'ImplicitLoginResponse'
+  }
+  User: { // field return type name
+    displayName: 'String'
+    email: 'String'
+    id: 'String'
+    image: 'String'
   }
   registerResponse: { // field return type name
     displayName: 'String'
@@ -202,6 +241,9 @@ export interface NexusGenArgTypes {
     }
     createUser: { // args
       credentials: NexusGenInputs['CreateUserInput']; // CreateUserInput!
+    }
+    deletePost: { // args
+      postId: string; // String!
     }
     googleLogin: { // args
       code: string; // String!

@@ -96,3 +96,12 @@ const ImplicitLoginResponse = objectType({
     t.string('image');
   },
 });
+
+export const User = objectType({
+  name: 'User',
+  definition(t) {
+    t.string('id'), t.string('email');
+    t.string('displayName');
+    t.string('image');
+  },
+});

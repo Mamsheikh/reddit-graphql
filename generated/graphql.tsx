@@ -31,6 +31,11 @@ export type CreateUserInput = {
   password: Scalars['String'];
 };
 
+export type DeletePostResponse = {
+  __typename?: 'DeletePostResponse';
+  success: Scalars['Boolean'];
+};
+
 export type ImageSignature = {
   __typename?: 'ImageSignature';
   signature?: Maybe<Scalars['String']>;
@@ -52,6 +57,7 @@ export type Mutation = {
   createImageSignature?: Maybe<ImageSignature>;
   createPost?: Maybe<Post>;
   createUser?: Maybe<RegisterResponse>;
+  deletePost?: Maybe<DeletePostResponse>;
   googleLogin?: Maybe<RegisterResponse>;
   joinCommunity?: Maybe<Community>;
   leaveCommunity?: Maybe<Community>;
@@ -72,6 +78,11 @@ export type MutationCreatePostArgs = {
 
 export type MutationCreateUserArgs = {
   credentials: CreateUserInput;
+};
+
+
+export type MutationDeletePostArgs = {
+  postId: Scalars['String'];
 };
 
 
@@ -97,15 +108,20 @@ export type MutationLoginArgs = {
 export type Post = {
   __typename?: 'Post';
   body?: Maybe<Scalars['String']>;
+  community?: Maybe<Community>;
   communityId?: Maybe<Scalars['String']>;
+  createdAt?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['String']>;
   image?: Maybe<Scalars['String']>;
   title?: Maybe<Scalars['String']>;
+  user?: Maybe<User>;
   userId?: Maybe<Scalars['String']>;
 };
 
 export type Query = {
   __typename?: 'Query';
   getCommunity?: Maybe<Community>;
+  getPosts?: Maybe<Array<Maybe<Post>>>;
   getUsersCommunities?: Maybe<Array<Maybe<Community>>>;
   googleAuthUrl?: Maybe<Scalars['String']>;
   implicitLogin?: Maybe<ImplicitLoginResponse>;
@@ -114,6 +130,19 @@ export type Query = {
 
 export type QueryGetCommunityArgs = {
   communityName: Scalars['String'];
+};
+
+
+export type QueryGetPostsArgs = {
+  communityId: Scalars['String'];
+};
+
+export type User = {
+  __typename?: 'User';
+  displayName?: Maybe<Scalars['String']>;
+  email?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['String']>;
+  image?: Maybe<Scalars['String']>;
 };
 
 export type CreatePostInput = {
@@ -176,6 +205,20 @@ export type CreatePostMutationVariables = Exact<{
 
 
 export type CreatePostMutation = { __typename?: 'Mutation', createPost?: { __typename?: 'Post', title?: string | null, body?: string | null, communityId?: string | null, image?: string | null, userId?: string | null } | null };
+
+export type GetPostsQueryVariables = Exact<{
+  communityId: Scalars['String'];
+}>;
+
+
+export type GetPostsQuery = { __typename?: 'Query', getPosts?: Array<{ __typename?: 'Post', title?: string | null, communityId?: string | null, body?: string | null, image?: string | null, userId?: string | null, createdAt?: string | null, id?: string | null, community?: { __typename?: 'Community', image?: string | null, numberOfMembers?: number | null, createdAt?: string | null, privacyType?: string | null, creatorId?: string | null, id?: string | null, name?: string | null } | null, user?: { __typename?: 'User', id?: string | null, email?: string | null, displayName?: string | null, image?: string | null } | null } | null> | null };
+
+export type DeletePostMutationVariables = Exact<{
+  postId: Scalars['String'];
+}>;
+
+
+export type DeletePostMutation = { __typename?: 'Mutation', deletePost?: { __typename?: 'DeletePostResponse', success: boolean } | null };
 
 export type LoginMutationVariables = Exact<{
   credentials: CreateUserInput;
@@ -471,6 +514,95 @@ export function useCreatePostMutation(baseOptions?: Apollo.MutationHookOptions<C
 export type CreatePostMutationHookResult = ReturnType<typeof useCreatePostMutation>;
 export type CreatePostMutationResult = Apollo.MutationResult<CreatePostMutation>;
 export type CreatePostMutationOptions = Apollo.BaseMutationOptions<CreatePostMutation, CreatePostMutationVariables>;
+export const GetPostsDocument = gql`
+    query GetPosts($communityId: String!) {
+  getPosts(communityId: $communityId) {
+    title
+    communityId
+    body
+    image
+    userId
+    community {
+      image
+      numberOfMembers
+      createdAt
+      privacyType
+      creatorId
+      id
+      name
+    }
+    user {
+      id
+      email
+      displayName
+      image
+    }
+    createdAt
+    id
+  }
+}
+    `;
+
+/**
+ * __useGetPostsQuery__
+ *
+ * To run a query within a React component, call `useGetPostsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetPostsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetPostsQuery({
+ *   variables: {
+ *      communityId: // value for 'communityId'
+ *   },
+ * });
+ */
+export function useGetPostsQuery(baseOptions: Apollo.QueryHookOptions<GetPostsQuery, GetPostsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetPostsQuery, GetPostsQueryVariables>(GetPostsDocument, options);
+      }
+export function useGetPostsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetPostsQuery, GetPostsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetPostsQuery, GetPostsQueryVariables>(GetPostsDocument, options);
+        }
+export type GetPostsQueryHookResult = ReturnType<typeof useGetPostsQuery>;
+export type GetPostsLazyQueryHookResult = ReturnType<typeof useGetPostsLazyQuery>;
+export type GetPostsQueryResult = Apollo.QueryResult<GetPostsQuery, GetPostsQueryVariables>;
+export const DeletePostDocument = gql`
+    mutation DeletePost($postId: String!) {
+  deletePost(postId: $postId) {
+    success
+  }
+}
+    `;
+export type DeletePostMutationFn = Apollo.MutationFunction<DeletePostMutation, DeletePostMutationVariables>;
+
+/**
+ * __useDeletePostMutation__
+ *
+ * To run a mutation, you first call `useDeletePostMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeletePostMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deletePostMutation, { data, loading, error }] = useDeletePostMutation({
+ *   variables: {
+ *      postId: // value for 'postId'
+ *   },
+ * });
+ */
+export function useDeletePostMutation(baseOptions?: Apollo.MutationHookOptions<DeletePostMutation, DeletePostMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeletePostMutation, DeletePostMutationVariables>(DeletePostDocument, options);
+      }
+export type DeletePostMutationHookResult = ReturnType<typeof useDeletePostMutation>;
+export type DeletePostMutationResult = Apollo.MutationResult<DeletePostMutation>;
+export type DeletePostMutationOptions = Apollo.BaseMutationOptions<DeletePostMutation, DeletePostMutationVariables>;
 export const LoginDocument = gql`
     mutation Login($credentials: CreateUserInput!) {
   login(credentials: $credentials) {

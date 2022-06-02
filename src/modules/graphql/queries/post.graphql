@@ -15,5 +15,28 @@ query GetPosts($communityId: String!) {
     body
     image
     userId
+    community {
+      image
+      numberOfMembers
+      createdAt
+      privacyType
+      creatorId
+      id
+      name
+    }
+    user {
+      id
+      email
+      displayName
+      image
+    }
+    createdAt
+    id
+  }
+}
+
+mutation DeletePost($postId: String!) {
+  deletePost(postId: $postId) {
+    success
   }
 }

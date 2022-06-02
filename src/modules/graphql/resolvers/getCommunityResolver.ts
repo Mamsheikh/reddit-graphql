@@ -18,7 +18,7 @@ export const getCommunityResolver: FieldResolver<
     image: community.imgURL,
     creatorId: community.creatorId,
     numberOfMembers: community.numberOfMembers,
-    createdAt: community.createdAt,
+    createdAt: community.createdAt.toDateString(),
     privacyType: community.privacyType,
   };
 };

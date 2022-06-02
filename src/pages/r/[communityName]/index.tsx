@@ -57,7 +57,7 @@ const CommunityPage = ({
       <PageContent>
         <>
           <CreatePostLink />
-          <Posts />
+          <Posts communityData={communityData} />
         </>
         <>RHS</>
       </PageContent>

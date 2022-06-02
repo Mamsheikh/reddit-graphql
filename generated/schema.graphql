@@ -17,6 +17,10 @@ input CreateUserInput {
   password: String!
 }
 
+type DeletePostResponse {
+  success: Boolean!
+}
+
 type ImageSignature {
   signature: String
   timestamp: Int
@@ -35,6 +39,7 @@ type Mutation {
   createImageSignature: ImageSignature
   createPost(input: createPostInput!): Post
   createUser(credentials: CreateUserInput!): registerResponse
+  deletePost(postId: String!): DeletePostResponse
   googleLogin(code: String!): registerResponse
   joinCommunity(communityId: String!): Community
   leaveCommunity(communityId: String!): Community
@@ -43,9 +48,13 @@ type Mutation {
 
 type Post {
   body: String
+  community: Community
   communityId: String
+  createdAt: String
+  id: String
   image: String
   title: String
+  user: User
   userId: String
 }
 
@@ -55,6 +64,13 @@ type Query {
   getUsersCommunities: [Community]
   googleAuthUrl: String
   implicitLogin: ImplicitLoginResponse
+}
+
+type User {
+  displayName: String
+  email: String
+  id: String
+  image: String
 }
 
 input createPostInput {

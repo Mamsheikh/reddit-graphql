@@ -19,6 +19,7 @@ import ImageUpload from './PostForm/ImageUpload';
 import { useRouter } from 'next/router';
 import useSelectFile from '../../hooks/useSelectFile';
 import {
+  GetPostsDocument,
   useCreateImageSignatureMutation,
   useCreatePostMutation,
 } from '../../../../generated/graphql';
@@ -61,14 +62,12 @@ const NewPostForm: React.FC<NewPostFormProps> = ({ communityName }) => {
   const [createImageSignature] = useCreateImageSignatureMutation();
   const router = useRouter();
   const [selectedTab, setSelectedTab] = useState(formTabs[0].title);
-  const [imageURL, setImageURL] = useState('');
   const [textInputs, setTextInputs] = useState({
     title: '',
     body: '',
   });
   const {
     selectedFile,
-    setSelectedFile,
     onSelectFile,
     uploadImage,
     previewImage,
@@ -79,7 +78,7 @@ const NewPostForm: React.FC<NewPostFormProps> = ({ communityName }) => {
   const [createPost, { loading, error }] = useCreatePostMutation();
 
   const handleCreatePost = async () => {
-    const { communityId } = router.query;
+    // const { communityId } = router.query;
     if (selectedFile) {
       const { data: signatureData } = await createImageSignature();
       if (signatureData) {
@@ -91,7 +90,7 @@ const NewPostForm: React.FC<NewPostFormProps> = ({ communityName }) => {
           signatureData.createImageSignature?.timestamp!
         );
         // console.log(data);
-        setImageURL(data.secure_url);
+        // setImageURL(data.secure_url);
         await createPost({
           variables: {
             input: {
@@ -101,7 +100,14 @@ const NewPostForm: React.FC<NewPostFormProps> = ({ communityName }) => {
               image: data.secure_url,
             },
           },
+          refetchQueries: [
+            {
+              query: GetPostsDocument,
+              variables: { communityId: communityName },
+            },
+          ],
         });
+        router.back();
         return;
       }
     }
@@ -116,6 +122,7 @@ const NewPostForm: React.FC<NewPostFormProps> = ({ communityName }) => {
         },
       },
     });
+    router.back();
   };
 
   const onTextChange = (

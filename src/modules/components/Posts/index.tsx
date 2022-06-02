@@ -1,5 +1,12 @@
 import { Stack } from '@chakra-ui/react';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
+import {
+  Community,
+  Post,
+  useGetPostsLazyQuery,
+} from '../../../../generated/graphql';
+// import { Post } from '../../../atoms/postAtom';
+import usePosts from '../../hooks/usePosts';
 import PostItem from './PostItem';
 import PostLoader from './PostLoader';
 
@@ -8,37 +15,28 @@ type PostsProps = {
 };
 
 const Posts: React.FC<PostsProps> = ({ communityData }) => {
-  const [user] = useAuthState(auth);
-  const [loading, setLoading] = useState(false);
-  const {
-    postStateValue,
-    setPostStateValue,
-    onVote,
-    onDeletePost,
-    onSelectPost,
-  } = usePosts();
-  const getPosts = async () => {
-    setLoading(true);
-    try {
-      const postsQuery = query(
-        collection(firestore, 'posts'),
-        where('communityId', '==', communityData.id),
-        orderBy('createdAt', 'desc')
-      );
-      const postsDoc = await getDocs(postsQuery);
-      const posts = postsDoc.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-      setPostStateValue((prev) => ({
-        ...prev,
-        posts: posts as Post[],
-      }));
-      //   console.log('posts', posts);
-    } catch (error: any) {
-      console.log('getPosts error', error.message);
+  const [getPosts, { loading }] = useGetPostsLazyQuery();
+  // const [user] = useAuthState(auth);
+  console.log('communityId', communityData?.id);
+  // const [loading, setLoading] = useState(false);
+  const { postStateValue, setPostStateValue } = usePosts();
+  const getPost = async () => {
+    if (communityData) {
+      await getPosts({
+        variables: {
+          communityId: communityData?.id,
+        },
+        onCompleted(data) {
+          setPostStateValue((prev) => ({
+            ...prev,
+            posts: data.getPosts as Post[],
+          }));
+        },
+      });
     }
-    setLoading(false);
   };
   useEffect(() => {
-    getPosts();
+    getPost();
   }, [communityData]);
 
   return (
@@ -49,16 +47,16 @@ const Posts: React.FC<PostsProps> = ({ communityData }) => {
         <Stack>
           {postStateValue.posts.map((post) => (
             <PostItem
-              userIsCreator={user?.uid === post.creatorId}
-              userVoteValue={
-                postStateValue.postVotes.find((vote) => vote.postId === post.id)
-                  ?.voteValue
-              }
+              // userIsCreator={user?.uid === post.creatorId}
+              // userVoteValue={
+              //   postStateValue.postVotes.find((vote) => vote.postId === post.id)
+              //     ?.voteValue
+              // }
               post={post}
               key={post.id}
-              onDeletePost={onDeletePost}
-              onVote={onVote}
-              onSelectPost={onSelectPost}
+              // onDeletePost={onDeletePost}
+              // onVote={onVote}
+              // onSelectPost={onSelectPost}
             />
           ))}
         </Stack>
