@@ -17,7 +17,7 @@ type PostsProps = {
 const Posts: React.FC<PostsProps> = ({ communityData }) => {
   const [getPosts, { loading }] = useGetPostsLazyQuery();
   // const [user] = useAuthState(auth);
-  console.log('communityId', communityData?.id);
+  // console.log('communityId', communityData?.id);
   // const [loading, setLoading] = useState(false);
   const { postStateValue, setPostStateValue } = usePosts();
   const getPost = async () => {

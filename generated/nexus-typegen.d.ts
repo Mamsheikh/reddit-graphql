@@ -130,6 +130,7 @@ export interface NexusGenFieldTypes {
     joinCommunity: NexusGenRootTypes['Community'] | null; // Community
     leaveCommunity: NexusGenRootTypes['Community'] | null; // Community
     login: NexusGenRootTypes['registerResponse'] | null; // registerResponse
+    updateCommunityImage: NexusGenRootTypes['Community'] | null; // Community
   }
   Post: { // field return type
     body: string | null; // String
@@ -197,6 +198,7 @@ export interface NexusGenFieldTypeNames {
     joinCommunity: 'Community'
     leaveCommunity: 'Community'
     login: 'registerResponse'
+    updateCommunityImage: 'Community'
   }
   Post: { // field return type name
     body: 'String'
@@ -256,6 +258,10 @@ export interface NexusGenArgTypes {
     }
     login: { // args
       credentials: NexusGenInputs['CreateUserInput']; // CreateUserInput!
+    }
+    updateCommunityImage: { // args
+      communityId: string; // String!
+      image: string; // String!
     }
   }
   Query: {

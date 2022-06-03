@@ -53,3 +53,15 @@ mutation JoinCommunity($communityId: String!) {
     createdAt
   }
 }
+
+mutation UpdateCommunityImage($communityId: String!, $image: String!) {
+  updateCommunityImage(communityId: $communityId, image: $image) {
+    id
+    name
+    privacyType
+    creatorId
+    image
+    numberOfMembers
+    createdAt
+  }
+}

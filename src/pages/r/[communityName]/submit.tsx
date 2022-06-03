@@ -1,6 +1,9 @@
 import { Box, Text } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
+import { useRecoilValue } from 'recoil';
+import { communityState } from '../../../atoms/communityAtom';
+import About from '../../../modules/components/Community/About';
 import PageContent from '../../../modules/components/Layout/PageContent';
 import NewPostForm from '../../../modules/components/Posts/NewPostForm';
 import useUserData from '../../../modules/hooks/useUserData';
@@ -11,6 +14,7 @@ const Submit: React.FC<submitProps> = () => {
   const router = useRouter();
   const { communityName } = router.query;
   const { userStateValue } = useUserData();
+  const communityStateValue = useRecoilValue(communityState);
   return (
     <PageContent>
       <>
@@ -26,9 +30,9 @@ const Submit: React.FC<submitProps> = () => {
         </Box>
       </>
       <>
-        {/* {communityStateValue.currentCommunity && (
+        {communityStateValue.currentCommunity && (
           <About communityData={communityStateValue.currentCommunity} />
-        )} */}
+        )}
       </>
     </PageContent>
   );

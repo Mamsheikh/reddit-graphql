@@ -5,3 +5,7 @@ export interface User {
   image?: string;
   id?: string;
 }
+
+import jwt from 'jsonwebtoken';
+
+export type DecodedJWT = jwt.JwtPayload & { userId: string };

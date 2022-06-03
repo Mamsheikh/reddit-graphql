@@ -29,9 +29,9 @@ const Header: React.FC<HeaderProps> = ({ communityData }) => {
       <Box height='50%' bg='blue.400' />
       <Flex justify='center' bg='white' flexGrow={1}>
         <Flex width='95%' maxWidth='860px'>
-          {/* {communityStateValue.currentCommunity?.imageURL ? (
+          {communityStateValue.currentCommunity?.image ? (
             <Image
-              src={communityStateValue.currentCommunity?.imageURL}
+              src={communityStateValue.currentCommunity?.image}
               alt='community'
               borderRadius={'full'}
               boxSize='66px'
@@ -40,17 +40,17 @@ const Header: React.FC<HeaderProps> = ({ communityData }) => {
               color='blue.500'
               border='4px solid white'
             />
-          ) : ( */}
-          <Icon
-            as={FaReddit}
-            fontSize={64}
-            position='relative'
-            top={-3}
-            color='blue.400'
-            border='4px solid white'
-            borderRadius='50%'
-          />
-          {/* // )} */}
+          ) : (
+            <Icon
+              as={FaReddit}
+              fontSize={64}
+              position='relative'
+              top={-3}
+              color='blue.400'
+              border='4px solid white'
+              borderRadius='50%'
+            />
+          )}
           <Flex padding='10px 16px'>
             <Flex direction='column' mr={6}>
               <Text fontWeight={800} fontSize='16pt'>

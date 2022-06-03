@@ -31,6 +31,7 @@ import {
   useDeletePostMutation,
 } from '../../../../generated/graphql';
 import useUserData from '../../hooks/useUserData';
+import usePosts from '../../hooks/usePosts';
 // import { Post } from '../../../atoms/postAtom';
 
 type PostItemProps = {
@@ -60,6 +61,7 @@ const PostItem: React.FC<PostItemProps> = ({
   const router = useRouter();
   const [loadingImage, setLoadingImage] = useState(true);
   const { userStateValue } = useUserData();
+  const { setPostStateValue } = usePosts();
   // const singlePostPage = !onSelectPost;
 
   const [error, setError] = useState('');
@@ -77,9 +79,15 @@ const PostItem: React.FC<PostItemProps> = ({
         refetchQueries: [
           {
             query: GetPostsDocument,
-            variables: { communityId: post.community.name },
+            variables: { communityId: post.id },
           },
         ],
+        onCompleted() {
+          setPostStateValue((prev) => ({
+            ...prev,
+            posts: prev.posts.filter((item) => item.id !== post.id),
+          }));
+        },
       });
       if (!success) {
         throw new Error('Failed to delete post');
@@ -160,33 +168,33 @@ const PostItem: React.FC<PostItemProps> = ({
                 ) : ( */}
               <Icon as={FaReddit} fontSize='18pt' mr={1} color='blue.500' />
               {/* )} */}
-              <Link href={`r/${post.community.name}`} passHref>
+              <Link href={`r/${post.community?.name}`} passHref>
                 <Text
                   fontWeight={700}
                   _hover={{ textDecoration: 'underline' }}
                   onClick={(event) => event.stopPropagation()}
-                >{`r/${post.community.name}`}</Text>
+                >{`r/${post.community?.name}`}</Text>
               </Link>
               <Icon as={BsDot} color='gray.500' fontSize={8} />
             </>
             {/* )} */}
 
             <Text>
-              Posted by u/{post.user.email}{' '}
+              Posted by u/{post?.user?.email}{' '}
               {moment(new Date(parseInt(post.createdAt))).fromNow()}
             </Text>
           </Stack>
           <Text fontSize={'12pt'} fontWeight={600}>
-            {post.title}
+            {post?.title}
           </Text>
-          <Text fontSize={'10pt'}>{post.body}</Text>
-          {post.image && (
+          <Text fontSize={'10pt'}>{post?.body}</Text>
+          {post?.image && (
             <Flex justify={'center'} align='center' p={2}>
               {loadingImage && (
                 <Skeleton height='200px' width={'100%'} borderRadius={4} />
               )}
               <Image
-                src={post.image}
+                src={post?.image}
                 alt='post image'
                 maxHeight={'460px'}
                 display={loadingImage ? 'none' : 'unset'}
@@ -226,7 +234,7 @@ const PostItem: React.FC<PostItemProps> = ({
             <Icon as={IoBookmarkOutline} mr={2} />
             <Text fontSize='9pt'>Save</Text>
           </Flex>
-          {userStateValue.id === post.userId && (
+          {userStateValue.id === post?.userId && (
             <Flex
               align={'center'}
               p='8px 10px'

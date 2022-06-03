@@ -23,6 +23,9 @@ import {
   useCreateImageSignatureMutation,
   useCreatePostMutation,
 } from '../../../../generated/graphql';
+import { communityState } from '../../../atoms/communityAtom';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { postState } from '../../../atoms/postAtom';
 
 type NewPostFormProps = {
   user: any;
@@ -62,6 +65,7 @@ const NewPostForm: React.FC<NewPostFormProps> = ({ communityName }) => {
   const [createImageSignature] = useCreateImageSignatureMutation();
   const router = useRouter();
   const [selectedTab, setSelectedTab] = useState(formTabs[0].title);
+  const setPostStateValue = useSetRecoilState(postState);
   const [textInputs, setTextInputs] = useState({
     title: '',
     body: '',
@@ -75,7 +79,14 @@ const NewPostForm: React.FC<NewPostFormProps> = ({ communityName }) => {
   } = useSelectFile();
   // const [loading, setLoading] = useState(false);
   // const [error, setError] = useState(false);
-  const [createPost, { loading, error }] = useCreatePostMutation();
+  const [createPost, { loading, error }] = useCreatePostMutation({
+    onCompleted(data) {
+      setPostStateValue((prev) => ({
+        ...prev,
+        posts: [...prev.posts, data.createPost],
+      }));
+    },
+  });
 
   const handleCreatePost = async () => {
     // const { communityId } = router.query;
@@ -103,7 +114,9 @@ const NewPostForm: React.FC<NewPostFormProps> = ({ communityName }) => {
           refetchQueries: [
             {
               query: GetPostsDocument,
-              variables: { communityId: communityName },
+              variables: {
+                communityId: communityName,
+              },
             },
           ],
         });

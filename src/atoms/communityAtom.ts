@@ -13,6 +13,7 @@ import { Community } from '../../generated/graphql';
 
 interface CommunityState {
   communities: Community[];
+  currentCommunity?: Community;
 }
 
 const defaultCommunityState: CommunityState = {

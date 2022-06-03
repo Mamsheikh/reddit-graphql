@@ -17,6 +17,9 @@ import PageContent from '../../../modules/components/Layout/PageContent';
 import useCommunityData from '../../../modules/hooks/useCommunityData';
 import CreatePostLink from '../../../modules/components/Community/CreatePostLink';
 import Posts from '../../../modules/components/Posts';
+import About from '../../../modules/components/Community/About';
+import { useSetRecoilState } from 'recoil';
+import { communityState } from '../../../atoms/communityAtom';
 // import NotFound from '../../../modules/components/Community/NotFound';
 // import Header from '../../../modules/components/Community/Header';
 
@@ -35,9 +38,11 @@ const CommunityPage = ({
 }: Community) => {
   //   console.log(communityData);
   // const { data } = useGetUsersCommunitiesQuery();
-  const { communityStateValue } = useCommunityData();
+  // const { communityStateValue } = useCommunityData();
   // console.log('here is data', communityStateValue.communities);
   const [communityData, setCommunityData] = useState<Community>();
+  const setCommunityStateValue = useSetRecoilState(communityState);
+  console.log(communityData);
   useEffect(() => {
     setCommunityData({
       id,
@@ -50,6 +55,15 @@ const CommunityPage = ({
     });
   }, []);
 
+  useEffect(() => {
+    // if (communityData) {
+    setCommunityStateValue((prev) => ({
+      ...prev,
+      currentCommunity: communityData,
+    }));
+    // }
+  }, []);
+
   if (!id || !name) return <NotFound />;
   return (
     <>
@@ -59,7 +73,9 @@ const CommunityPage = ({
           <CreatePostLink />
           <Posts communityData={communityData} />
         </>
-        <>RHS</>
+        <>
+          <About communityData={communityData} />
+        </>
       </PageContent>
     </>
   );
@@ -94,8 +110,9 @@ export const getServerSideProps = async ({
         creatorId: data.getCommunity?.creatorId,
         name: data.getCommunity?.name,
         numberOfMembers: data.getCommunity?.numberOfMembers,
-        imageURL: data.getCommunity?.image,
+        image: data.getCommunity?.image,
         privacyType: data.getCommunity?.privacyType,
+        createdAt: data.getCommunity.createdAt,
       },
     });
   } catch (error) {

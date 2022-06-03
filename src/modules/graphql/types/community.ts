@@ -11,6 +11,7 @@ import { getCommunityResolver } from '../resolvers/getCommunityResolver';
 import { getUsersCommunitesResolver } from '../resolvers/getUsersCommunitiesResolver';
 import { joinCommunityResolver } from '../resolvers/joinCommunityResolver';
 import { leaveCommunityResolver } from '../resolvers/leaveCommunityResolver';
+import { updateCommunityImageResolver } from '../resolvers/updateCommunityImageResolver';
 
 export const createCommunity = extendType({
   type: 'Mutation',
@@ -65,6 +66,17 @@ export const leaveCommunity = extendType({
       type: Community,
       args: { communityId: nonNull(stringArg()) },
       resolve: leaveCommunityResolver,
+    });
+  },
+});
+
+export const updateCommunityImage = extendType({
+  type: 'Mutation',
+  definition(t) {
+    t.field('updateCommunityImage', {
+      type: Community,
+      args: { communityId: nonNull(stringArg()), image: nonNull(stringArg()) },
+      resolve: updateCommunityImageResolver,
     });
   },
 });
