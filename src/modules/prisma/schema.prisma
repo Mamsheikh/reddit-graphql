@@ -68,8 +68,10 @@ model Vote {
   user   User   @relation(fields: [userId], references: [id])
   post   Post   @relation(fields: [postId], references: [id])
   value  Int
-  userId String
-  postId String
+  userId String @unique
+  postId String @unique
+
+  // @@unique([userId, postId])
 }
 
 enum PrivacyType {

@@ -1,6 +1,7 @@
 import {
   extendType,
   inputObjectType,
+  intArg,
   list,
   nonNull,
   objectType,
@@ -9,6 +10,7 @@ import {
 import { IsAuth } from '../../../utils/auth';
 import { createPostResolver } from '../resolvers/createPostResolver';
 import { getPostsResolver } from '../resolvers/getPostsResolver';
+import { updootResolver } from '../resolvers/updootResolver';
 import { User } from './user';
 
 export const createPost = extendType({
@@ -66,6 +68,16 @@ export const deletePost = extendType({
   },
 });
 
+export const vote = extendType({
+  type: 'Mutation',
+  definition(t) {
+    t.field('vote', {
+      type: 'Boolean',
+      args: { postId: nonNull(stringArg()), value: nonNull(intArg()) },
+      resolve: updootResolver,
+    });
+  },
+});
 const createPostInput = inputObjectType({
   name: 'createPostInput',
   definition(t) {
