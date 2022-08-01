@@ -11,7 +11,7 @@ import {
 } from '@chakra-ui/react';
 // import moment from 'moment';
 import Link from 'next/link';
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import { FaReddit } from 'react-icons/fa';
 import { HiOutlineDotsHorizontal } from 'react-icons/hi';
 import { RiCakeLine } from 'react-icons/ri';
@@ -31,9 +31,9 @@ type AboutProps = {
 
 const About: React.FC<AboutProps> = ({ communityData }) => {
   const { userStateValue } = useUserData();
-  const { selectedFile, setSelectedFile, uploadImage, onSelectFile } =
+  const { selectedFile, uploadImage, onSelectFile } =
     useSelectFile();
-  const [uploadingImage, setUploadingImage] = useState(false);
+  // const [uploadingImage, setUploadingImage] = useState(false);
   const selectedFileRef = useRef<HTMLInputElement>(null);
   const [updateCommunityImage, { loading }] = useUpdateCommunityImageMutation();
   const [createImageSignature] = useCreateImageSignatureMutation();
