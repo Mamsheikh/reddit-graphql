@@ -9,7 +9,7 @@ import {
   Stack,
   Text,
 } from '@chakra-ui/react';
-import moment from 'moment';
+// import moment from 'moment';
 import Link from 'next/link';
 import React, { useRef, useState } from 'react';
 import { FaReddit } from 'react-icons/fa';
