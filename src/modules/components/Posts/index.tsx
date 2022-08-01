@@ -4,6 +4,7 @@ import {
   Community,
   Post,
   useGetPostsLazyQuery,
+  useGetPostsQuery,
 } from '../../../../generated/graphql';
 // import { Post } from '../../../atoms/postAtom';
 import usePosts from '../../hooks/usePosts';
@@ -15,29 +16,36 @@ type PostsProps = {
 };
 
 const Posts: React.FC<PostsProps> = ({ communityData }) => {
-  const [getPosts, { loading }] = useGetPostsLazyQuery();
+  const [getPosts, { data, loading }] = useGetPostsLazyQuery();
+
   // const [user] = useAuthState(auth);
   // console.log('communityId', communityData?.id);
   // const [loading, setLoading] = useState(false);
-  const { postStateValue, setPostStateValue } = usePosts();
-  const getPost = async () => {
+  // const { postStateValue, setPostStateValue } = usePosts();
+  // const getPost = async () => {
+  //   if (communityData) {
+  //     await getPosts({
+  //       variables: {
+  //         communityId: communityData?.id,
+  //       },
+  //       onCompleted(data) {
+  //         setPostStateValue((prev) => ({
+  //           ...prev,
+  //           posts: data.getPosts as Post[],
+  //         }));
+  //       },
+  //     });
+  //   }
+  // };
+  useEffect(() => {
     if (communityData) {
-      await getPosts({
+      getPosts({
         variables: {
           communityId: communityData?.id,
         },
-        onCompleted(data) {
-          setPostStateValue((prev) => ({
-            ...prev,
-            posts: data.getPosts as Post[],
-          }));
-        },
       });
     }
-  };
-  useEffect(() => {
-    getPost();
-  }, [communityData]);
+  }, [getPosts, communityData]);
 
   return (
     <>
@@ -45,7 +53,7 @@ const Posts: React.FC<PostsProps> = ({ communityData }) => {
         <PostLoader />
       ) : (
         <Stack>
-          {postStateValue.posts.map((post) => (
+          {data?.getPosts.map((post) => (
             <PostItem
               // userIsCreator={user?.uid === post.creatorId}
               // userVoteValue={

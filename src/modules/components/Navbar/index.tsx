@@ -25,7 +25,7 @@ const Navbar: React.FC = () => {
     }
   }, [data?.implicitLogin]);
 
-  console.log({ userStateValue });
+  // console.log({ userStateValue });
   return (
     <Flex
       bg='white'

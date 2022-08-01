@@ -63,6 +63,7 @@ export type Mutation = {
   leaveCommunity?: Maybe<Community>;
   login?: Maybe<RegisterResponse>;
   updateCommunityImage?: Maybe<Community>;
+  vote?: Maybe<Scalars['Boolean']>;
 };
 
 
@@ -110,6 +111,12 @@ export type MutationLoginArgs = {
 export type MutationUpdateCommunityImageArgs = {
   communityId: Scalars['String'];
   image: Scalars['String'];
+};
+
+
+export type MutationVoteArgs = {
+  postId: Scalars['String'];
+  value: Scalars['Int'];
 };
 
 export type Post = {
@@ -219,14 +226,14 @@ export type CreatePostMutationVariables = Exact<{
 }>;
 
 
-export type CreatePostMutation = { __typename?: 'Mutation', createPost?: { __typename?: 'Post', title?: string | null, body?: string | null, communityId?: string | null, image?: string | null, userId?: string | null } | null };
+export type CreatePostMutation = { __typename?: 'Mutation', createPost?: { __typename?: 'Post', id?: string | null, title?: string | null, communityId?: string | null, body?: string | null, image?: string | null, userId?: string | null, createdAt?: string | null, community?: { __typename?: 'Community', image?: string | null, numberOfMembers?: number | null, createdAt?: string | null, privacyType?: string | null, creatorId?: string | null, id?: string | null, name?: string | null } | null, user?: { __typename?: 'User', id?: string | null, email?: string | null, displayName?: string | null, image?: string | null } | null } | null };
 
 export type GetPostsQueryVariables = Exact<{
   communityId: Scalars['String'];
 }>;
 
 
-export type GetPostsQuery = { __typename?: 'Query', getPosts?: Array<{ __typename?: 'Post', title?: string | null, communityId?: string | null, body?: string | null, image?: string | null, userId?: string | null, createdAt?: string | null, id?: string | null, community?: { __typename?: 'Community', image?: string | null, numberOfMembers?: number | null, createdAt?: string | null, privacyType?: string | null, creatorId?: string | null, id?: string | null, name?: string | null } | null, user?: { __typename?: 'User', id?: string | null, email?: string | null, displayName?: string | null, image?: string | null } | null } | null> | null };
+export type GetPostsQuery = { __typename?: 'Query', getPosts?: Array<{ __typename?: 'Post', id?: string | null, title?: string | null, communityId?: string | null, body?: string | null, image?: string | null, userId?: string | null, createdAt?: string | null, community?: { __typename?: 'Community', image?: string | null, numberOfMembers?: number | null, createdAt?: string | null, privacyType?: string | null, creatorId?: string | null, id?: string | null, name?: string | null } | null, user?: { __typename?: 'User', id?: string | null, email?: string | null, displayName?: string | null, image?: string | null } | null } | null> | null };
 
 export type DeletePostMutationVariables = Exact<{
   postId: Scalars['String'];
@@ -535,11 +542,29 @@ export type CreateImageSignatureMutationOptions = Apollo.BaseMutationOptions<Cre
 export const CreatePostDocument = gql`
     mutation CreatePost($input: createPostInput!) {
   createPost(input: $input) {
+    id
     title
-    body
     communityId
+    body
     image
     userId
+    community {
+      image
+      numberOfMembers
+      createdAt
+      privacyType
+      creatorId
+      id
+      name
+    }
+    user {
+      id
+      email
+      displayName
+      image
+    }
+    createdAt
+    id
   }
 }
     `;
@@ -572,6 +597,7 @@ export type CreatePostMutationOptions = Apollo.BaseMutationOptions<CreatePostMut
 export const GetPostsDocument = gql`
     query GetPosts($communityId: String!) {
   getPosts(communityId: $communityId) {
+    id
     title
     communityId
     body

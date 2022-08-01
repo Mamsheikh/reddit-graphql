@@ -76,18 +76,15 @@ const PostItem: React.FC<PostItemProps> = ({
         variables: {
           postId: post.id,
         },
-        refetchQueries: [
-          {
-            query: GetPostsDocument,
-            variables: { communityId: post.id },
-          },
-        ],
-        onCompleted() {
-          setPostStateValue((prev) => ({
-            ...prev,
-            posts: prev.posts.filter((item) => item.id !== post.id),
-          }));
+        update: (cache) => {
+          cache.evict({ id: 'Post:' + post.id });
         },
+        // onCompleted() {
+        //   setPostStateValue((prev) => ({
+        //     ...prev,
+        //     posts: prev.posts.filter((item) => item.id !== post.id),
+        //   }));
+        // },
       });
       if (!success) {
         throw new Error('Failed to delete post');

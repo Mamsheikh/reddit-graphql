@@ -1,15 +1,34 @@
 mutation CreatePost($input: createPostInput!) {
   createPost(input: $input) {
+    id
     title
-    body
     communityId
+    body
     image
     userId
+    community {
+      image
+      numberOfMembers
+      createdAt
+      privacyType
+      creatorId
+      id
+      name
+    }
+    user {
+      id
+      email
+      displayName
+      image
+    }
+    createdAt
+    id
   }
 }
 
 query GetPosts($communityId: String!) {
   getPosts(communityId: $communityId) {
+    id
     title
     communityId
     body

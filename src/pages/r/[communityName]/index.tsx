@@ -42,7 +42,7 @@ const CommunityPage = ({
   // console.log('here is data', communityStateValue.communities);
   const [communityData, setCommunityData] = useState<Community>();
   const setCommunityStateValue = useSetRecoilState(communityState);
-  console.log(communityData);
+  // console.log(communityData);
   useEffect(() => {
     setCommunityData({
       id,

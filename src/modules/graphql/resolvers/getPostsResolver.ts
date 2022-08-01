@@ -8,6 +8,7 @@ export const getPostsResolver: FieldResolver<'Query', 'getPosts'> = async (
 ) => {
   const posts = await prisma.post.findMany({
     where: { communityId: communityId },
+    orderBy: { createdAt: 'desc' },
   });
 
   if (!postState) {

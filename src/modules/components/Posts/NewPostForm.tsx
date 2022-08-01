@@ -20,12 +20,14 @@ import { useRouter } from 'next/router';
 import useSelectFile from '../../hooks/useSelectFile';
 import {
   GetPostsDocument,
+  GetPostsQuery,
   useCreateImageSignatureMutation,
   useCreatePostMutation,
 } from '../../../../generated/graphql';
 import { communityState } from '../../../atoms/communityAtom';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { postState } from '../../../atoms/postAtom';
+import { gql } from '@apollo/client';
 
 type NewPostFormProps = {
   user: any;
@@ -111,14 +113,44 @@ const NewPostForm: React.FC<NewPostFormProps> = ({ communityName }) => {
               image: data.secure_url,
             },
           },
-          refetchQueries: [
-            {
+          update(cache, { data: { createPost } }) {
+            const { getPosts } = cache.readQuery<GetPostsQuery>({
               query: GetPostsDocument,
               variables: {
-                communityId: communityName,
+                communityId: createPost.communityId,
               },
-            },
-          ],
+            });
+            console.log('cache getPOsts', getPosts);
+          },
+          // update: (cache, { data }) => {
+          //   console.log(cache);
+          //   cache.evict({ fieldName: 'getPosts' });
+          // const { getPosts } = cache.readQuery({
+          //   query: GetPostsDocument,
+          //   variables: {
+          //     communityId: '10847e8c-cc79-4d2b-bf52-e7db992bd1b0',
+          //   },
+          // });
+          // console.log(getPosts);
+
+          // cache.writeQuery({
+          //   query: GetPostsDocument,
+          //   variables: {
+          //     communityId: '10847e8c-cc79-4d2b-bf52-e7db992bd1b0',
+          //   },
+          //   data: {
+          //     getPosts: [data.createPost, ...getPosts],
+          //   },
+          // });
+          // },
+          // refetchQueries: [
+          //   {
+          //     query: GetPostsDocument,
+          //     variables: {
+          //       communityId: '10847e8c-cc79-4d2b-bf52-e7db992bd1b0',
+          //     },
+          //   },
+          // ],
         });
         router.back();
         return;

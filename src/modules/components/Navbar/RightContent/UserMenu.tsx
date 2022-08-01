@@ -20,6 +20,8 @@ import { VscAccount } from 'react-icons/vsc';
 import { useSetRecoilState } from 'recoil';
 import { User } from '../../../../types';
 import { authModalState } from '../../../../atoms/authModalAtom';
+import { ImplicitLoginResponse } from '../../../../../generated/graphql';
+import { useApolloClient } from '@apollo/client';
 // import { authModalState } from '../../../atoms/authModalAtom';
 // import { auth } from '../../../firebase/clientApp';
 
@@ -29,7 +31,7 @@ type UserMenuProps = {
 
 const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
   const setAuthModalState = useSetRecoilState(authModalState);
-
+  const apolloClient = useApolloClient();
   const logout = async () => {
     // await signOut(auth);
     // resetCommunityState();
@@ -95,7 +97,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
               _hover={{ bg: 'blue.500', color: 'white' }}
               onClick={logout}
             >
-              <Flex align='center'>
+              <Flex align='center' onClick={() => apolloClient.resetStore()}>
                 <Icon as={MdOutlineLogin} fontSize={20} mr={2} />
                 Logout
               </Flex>

@@ -37,7 +37,7 @@ export const googleLogin = extendType({
   type: 'Mutation',
   definition(t) {
     t.field('googleLogin', {
-      type: registerResponse,
+      type: ImplicitLoginResponse,
       args: {
         code: nonNull(stringArg()),
       },

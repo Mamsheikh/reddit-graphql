@@ -5,8 +5,23 @@
 
 
 import type { Context } from "./../src/types/Context"
-
-
+import type { core } from "nexus"
+declare global {
+  interface NexusGenCustomInputMethods<TypeName extends string> {
+    /**
+     * A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
+     */
+    dateTime<FieldName extends string>(fieldName: FieldName, opts?: core.CommonInputFieldConfig<TypeName, FieldName>): void // "DateTime";
+  }
+}
+declare global {
+  interface NexusGenCustomOutputMethods<TypeName extends string> {
+    /**
+     * A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
+     */
+    dateTime<FieldName extends string>(fieldName: FieldName, ...opts: core.ScalarOutSpread<TypeName, FieldName>): void // "DateTime";
+  }
+}
 
 
 declare global {
@@ -35,6 +50,7 @@ export interface NexusGenScalars {
   Float: number
   Boolean: boolean
   ID: string
+  DateTime: any
 }
 
 export interface NexusGenObjects {
@@ -65,7 +81,7 @@ export interface NexusGenObjects {
   Post: { // root type
     body?: string | null; // String
     communityId?: string | null; // String
-    createdAt?: string | null; // String
+    createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
     id?: string | null; // String
     image?: string | null; // String
     title?: string | null; // String
@@ -126,7 +142,7 @@ export interface NexusGenFieldTypes {
     createPost: NexusGenRootTypes['Post'] | null; // Post
     createUser: NexusGenRootTypes['registerResponse'] | null; // registerResponse
     deletePost: NexusGenRootTypes['DeletePostResponse'] | null; // DeletePostResponse
-    googleLogin: NexusGenRootTypes['registerResponse'] | null; // registerResponse
+    googleLogin: NexusGenRootTypes['ImplicitLoginResponse'] | null; // ImplicitLoginResponse
     joinCommunity: NexusGenRootTypes['Community'] | null; // Community
     leaveCommunity: NexusGenRootTypes['Community'] | null; // Community
     login: NexusGenRootTypes['registerResponse'] | null; // registerResponse
@@ -137,7 +153,7 @@ export interface NexusGenFieldTypes {
     body: string | null; // String
     community: NexusGenRootTypes['Community'] | null; // Community
     communityId: string | null; // String
-    createdAt: string | null; // String
+    createdAt: NexusGenScalars['DateTime'] | null; // DateTime
     id: string | null; // String
     image: string | null; // String
     title: string | null; // String
@@ -195,7 +211,7 @@ export interface NexusGenFieldTypeNames {
     createPost: 'Post'
     createUser: 'registerResponse'
     deletePost: 'DeletePostResponse'
-    googleLogin: 'registerResponse'
+    googleLogin: 'ImplicitLoginResponse'
     joinCommunity: 'Community'
     leaveCommunity: 'Community'
     login: 'registerResponse'
@@ -206,7 +222,7 @@ export interface NexusGenFieldTypeNames {
     body: 'String'
     community: 'Community'
     communityId: 'String'
-    createdAt: 'String'
+    createdAt: 'DateTime'
     id: 'String'
     image: 'String'
     title: 'String'

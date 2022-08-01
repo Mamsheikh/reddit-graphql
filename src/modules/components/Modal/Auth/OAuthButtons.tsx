@@ -3,6 +3,8 @@ import { useRouter } from 'next/router';
 import React, { useEffect, useRef } from 'react';
 import { useSetRecoilState } from 'recoil';
 import {
+  ImplicitLoginDocument,
+  ImplicitLoginQuery,
   useAuthUrlLazyQuery,
   useGoogleLoginMutation,
 } from '../../../../../generated/graphql';
@@ -45,6 +47,15 @@ const OAuthButtons: React.FC = () => {
         variables: {
           code: code,
         },
+        // update: (cache,{data}) => {
+        //   cache.writeQuery<ImplicitLoginQuery>({
+        //     query: ImplicitLoginDocument,
+        //     data: {
+        //       __typename:"Query",
+        //       implicitLogin: data.googleLogin
+        //     }
+        //   })
+        // }
       });
       // setAuthModalState({ open: true, view: 'login' });
     }

@@ -25,11 +25,5 @@ export const createPostResolver: FieldResolver<
     },
   });
 
-  return {
-    title: newPost.title,
-    body: newPost.body,
-    communityId: newPost.communityId,
-    image: newPost.image,
-    userId: newPost.userId,
-  };
+  return newPost;
 };

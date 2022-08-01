@@ -1,5 +1,6 @@
 import { Button, Flex } from '@chakra-ui/react';
 import React from 'react';
+import { ImplicitLoginResponse } from '../../../../../generated/graphql';
 import { User } from '../../../../types';
 import AuthModal from '../../Modal/Auth/AuthModal';
 import AuthButtons from './AuthButtons';

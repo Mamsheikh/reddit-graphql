@@ -97,7 +97,7 @@ export const post = objectType({
     t.string('communityId');
     t.string('image');
     t.string('userId');
-    t.string('createdAt');
+    t.dateTime('createdAt');
     t.field('community', {
       type: 'Community',
       async resolve(parent, _, ctx) {

@@ -102,11 +102,13 @@ export const googleLoginResolver: FieldResolver<
     } as CookieSerializeOptions);
 
     return {
-      message: 'google login success',
+      loggedIn: true,
+      displayName: newUser.displayName,
+      email: newUser.email,
+      id: newUser.id,
+      image: newUser.image,
     };
   } catch (error) {
-    return {
-      message: `failed to loginvia google: ${error}`,
-    };
+    console.log('failed to googleLOgin', error);
   }
 };
